@@ -1,11 +1,28 @@
 <script setup lang="ts">
 import axios from "axios";
 import { ref, onMounted, onUnmounted } from 'vue';
-import { getCurrentDate } from '../utils/timeAll'
+import { getCurrentDate } from '../utils/timeAll';
+import { MenuOutlined } from '@ant-design/icons-vue';
 
 const scrollPosition = ref(0);
 const isShowSideBox = ref(false);
 const currentTime = ref<string>('');
+
+import type { DrawerProps } from 'ant-design-vue';
+const placement = ref<DrawerProps['placement']>('left');
+const open = ref<boolean>(false);
+
+const showDrawer = () => {
+    open.value = true;
+};
+
+const onClose = () => {
+    open.value = false;
+};
+
+
+// 控制 div 是否吸附到页面的侧边
+const isSticky = ref(false);
 
 
 // 处理滚动事件的回调
@@ -16,7 +33,10 @@ const handleScroll = () => {
     } else {
         isShowSideBox.value = false;
     }
+    isSticky.value = scrollY > 200;
 };
+
+
 
 
 // 更新当前时间的函数
@@ -84,14 +104,14 @@ onUnmounted(() => {
                 </div>
 
             </header>
+            <div class="menu" :class="{ 'sticky': isSticky }" @click="showDrawer">
+                <MenuOutlined style="font-size: 14px;" />
+                <span v-if="!isSticky" style="margin-left: 5px;">Menu</span>
+            </div>
+            <!-- <div class="side-box" :class="{ 'sticky': isSticky }" :style="{ top: isSticky ? '10px' : 'auto' }">
+                吸附到右侧
+            </div> -->
             <div>
-                <div class="img">
-
-                </div>
-
-                <div>
-
-                </div>
                 <div class="scroll-2000">
                     222
                     <SvgIcon name="wechat" />
@@ -101,6 +121,12 @@ onUnmounted(() => {
                 <a-back-top :visibility-height="0" /> <a-back-top :visibility-height="0" />
             </div>
         </div>
+        <!-- 侧边栏盒子 -->
+        <a-drawer :width="320" title="Menu菜单" :placement="placement" :open="open" @close="onClose">
+            <div>
+                123
+            </div>
+        </a-drawer>
     </section>
 </template>
 
@@ -202,11 +228,32 @@ onUnmounted(() => {
             }
         }
 
-        .img {
-            height: 390px;
-            min-height: 320px;
-            position: relative;
-            background-color: pink;
+        .menu {
+            position: fixed;
+            z-index: 2;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 3px;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #fff;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            cursor: pointer;
+            transition: left .3s ease;
+
+            &:hover {
+                opacity: .6;
+            }
+        }
+
+        .sticky {
+            left: -2px !important;
+            font-size: 0;
+            background-color: #333;
+            transition: all 0.3s ease;
         }
 
         .scroll-2000 {
@@ -214,6 +261,8 @@ onUnmounted(() => {
         }
     }
 }
+
+
 
 @media (max-width: 768px) {
     .header-bg {

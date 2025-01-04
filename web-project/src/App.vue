@@ -2,7 +2,10 @@
 </script>
 
 <template>
-  <router-view></router-view>
+  <div>
+    <ProgressBar />
+    <router-view />
+  </div>
 </template>
 
 <style scoped lang="scss">
@@ -15,5 +18,4 @@
   width: 0 !important;
   height: 0;
 }
-
 </style>
