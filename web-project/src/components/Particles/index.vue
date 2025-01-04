@@ -85,5 +85,6 @@ export default {
     width: 100%;
     height: 100%;
     z-index: 3;
+    background-color: #f5f8fb; /* 修改背景色为红色 */
 }
 </style>
