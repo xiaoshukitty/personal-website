@@ -3,6 +3,7 @@ import axios from "axios";
 import { ref, onMounted, onUnmounted } from 'vue';
 import { getCurrentDate } from '../utils/timeAll';
 import { MenuOutlined } from '@ant-design/icons-vue';
+import Particles from '../components/Particles/index.vue'
 
 const scrollPosition = ref(0);
 const isShowSideBox = ref(false);
@@ -108,18 +109,18 @@ onUnmounted(() => {
                 <MenuOutlined style="font-size: 14px;" />
                 <span v-if="!isSticky" style="margin-left: 5px;">Menu</span>
             </div>
-            <!-- <div class="side-box" :class="{ 'sticky': isSticky }" :style="{ top: isSticky ? '10px' : 'auto' }">
-                吸附到右侧
-            </div> -->
-            <div>
-                <div class="scroll-2000">
-                    222
-                    <SvgIcon name="wechat" />
+            <div class="wrapper">
+                <div class="scroll-2000 ">
+                    <div>1</div>
+                    <div>2</div>
+                    <div>3</div>
                 </div>
             </div>
+
             <div class="side-box" v-if="isShowSideBox">
                 <a-back-top :visibility-height="0" /> <a-back-top :visibility-height="0" />
             </div>
+            <Particles />
         </div>
         <!-- 侧边栏盒子 -->
         <a-drawer :width="320" title="Menu菜单" :placement="placement" :open="open" @close="onClose">
@@ -134,6 +135,9 @@ onUnmounted(() => {
 .main {
     .content {
         .header {
+            position: relative;
+            z-index: 9;
+
             .header-bg {
                 background-image: url('https://pic.rmb.bdstatic.com/bjh/events/c44b798fc964edd5fdd7c2bd51bc71128701.png@h_1280');
                 background-size: cover;
@@ -230,7 +234,7 @@ onUnmounted(() => {
 
         .menu {
             position: fixed;
-            z-index: 2;
+            z-index: 10;
             border: 1px solid rgba(255, 255, 255, 0.6);
             border-radius: 3px;
             font-size: 12px;
@@ -256,8 +260,22 @@ onUnmounted(() => {
             transition: all 0.3s ease;
         }
 
-        .scroll-2000 {
-            height: 125rem;
+
+
+        .wrapper {
+            position: relative;
+            z-index: 9;
+            max-width: 892px;
+            margin: 0 auto;
+            padding: 0 10px;
+
+            .scroll-2000 {
+                height: 125rem;
+                margin: 40px auto;
+                box-shadow: 8px 14px 38px rgba(39, 44, 49, .06), 1px 3px 8px rgba(39, 44, 49, .03);
+                background-color: rgba(255, 255, 255, .9);
+                border-radius: 5px;
+            }
         }
     }
 }
