@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "types": ["node"],  // 这里添加 "node"，确保 TypeScript 能找到 Node.js 的类型声明
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "server/**/*.ts",  // 如果你在 `server` 目录中有 TypeScript 文件，也可以添加这里
+    "vite.config.ts"  // 确保 Vite 配置文件被包括
+  ]
+}
