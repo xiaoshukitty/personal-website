@@ -62,11 +62,14 @@ const restoreScrollPosition = () => {
     }
 
 }
-const scrollOneScreen = () => {
-    window.scrollBy({
-        top: window.innerHeight, // 滚动一个屏幕的高度
-        behavior: "smooth", // 启用平滑滚动
-    });
+const scrollOneScreen = (val: string) => {
+    const element = document.getElementById(val);
+    if (element) {
+        element.scrollIntoView({
+            behavior: 'smooth', // 平滑滚动
+            block: 'start',     // 滚动到目标元素的顶部
+        });
+    }
 }
 
 
@@ -85,17 +88,11 @@ onMounted(async () => {
     window.addEventListener('scroll', handleScroll);
     updateCurrentTime(); // 初始获取当前时间
     timer = setInterval(updateCurrentTime, 1000); // 每秒更新一次时间
-    // 初始化时设置一次
-    updateStyles();
-
-    // 监听窗口大小变化
-    window.addEventListener('resize', updateStyles);
 });
 
 // 组件卸载时移除事件监听
 onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll);
-    window.removeEventListener('resize', updateStyles);
     clearInterval(timer);
 });
 
@@ -116,27 +113,27 @@ onUnmounted(() => {
                             <div>
                                 <SvgIcon name="qq" :width="'50px'" :height="'50px'" />
                             </div>
-                            <div class="ml20">
+                            <div>
                                 <SvgIcon name="wechat" :width="'50px'" :height="'50px'" />
                             </div>
-                            <div class="ml20">
+                            <div>
                                 <SvgIcon name="sina" :width="'50px'" :height="'50px'" />
                             </div>
-                            <div class="ml20">
+                            <div>
                                 <SvgIcon name="alipay" :width="'50px'" :height="'50px'" />
                             </div>
-                            <div class="ml20">
+                            <div>
                                 <SvgIcon name="applets" :width="'50px'" :height="'50px'" />
                             </div>
                         </div>
-                        <h1>🍃本是椿花楸月、奈何北冥有鱼 🍂</h1>
+                        <h1 class="text-labels">🍃本是椿花楸月、奈何北冥有鱼 🍂</h1>
                         <h1>励志文案</h1>
                         <div class="container">
-                            <div @click="scrollOneScreen">首页</div>
+                            <div @click="scrollOneScreen('wrapper')">首页</div>
                             <div @click="showDrawer">分类</div>
-                            <div>留言板</div>
+                            <div>留言 </div>
                             <div>链接</div>
-                            <div>关于我</div>
+                            <div>关于</div>
                         </div>
                         <h1 class="today-time">{{ currentTime }}</h1>
                     </div>
@@ -147,7 +144,7 @@ onUnmounted(() => {
                 <MenuOutlined style="font-size: 14px;" />
                 <span v-if="!isSticky" style="margin-left: 5px;">Menu</span>
             </div>
-            <div class="wrapper">
+            <div class="wrapper" id="wrapper">
                 <div class="articles">
                     <div class="item" v-for="n in 10" :key="n">
                         <h2>
@@ -234,6 +231,7 @@ onUnmounted(() => {
 
                     .contact-information {
                         display: flex;
+                        gap: 1.25rem;
 
                         div {
                             width: 50px;
@@ -241,10 +239,6 @@ onUnmounted(() => {
                             border-radius: 50%;
                             transition: transform 0.3s ease, box-shadow 0.3s ease;
                             cursor: pointer;
-                        }
-
-                        .ml20 {
-                            margin-left: 20px;
                         }
 
                         div:hover {
@@ -261,20 +255,59 @@ onUnmounted(() => {
                         margin-top: 40px;
                     }
 
+                    .text-labels {
+                        font-size: 1.875rem;
+                        // cursor: pointer;
+                        // transition: transform 0.3s ease-in-out;
+
+                        // &:hover {
+                        //     transform: scale(1.5);
+                        // }
+                    }
+
+                    // .container {
+                    //     display: flex;
+                    //     box-sizing: border-box;
+
+                    //     div {
+                    //         width: 100px;
+                    //         height: 50px;
+                    //         background-color: pink;
+                    //         border-radius: 8px;
+                    //         margin-top: 20px;
+                    //         margin-right: 20px;
+                    //         display: flex;
+                    //         justify-content: center;
+                    //         align-items: center;
+                    //         font-size: 1.25rem;
+                    //         font-weight: bold;
+                    //         color: #fff;
+                    //         cursor: pointer;
+                    //         transition: all 0.3s ease-in-out;
+
+                    //         &:hover {
+                    //             background-color: #fff;
+                    //             color: #000;
+                    //         }
+                    //     }
+                    // }
+
                     .container {
                         display: flex;
                         box-sizing: border-box;
+                        margin-top: 1.25rem;
+                        gap: 20px;
 
                         div {
-                            width: 100px;
-                            height: 50px;
+                            width: 80%;
+                            max-width: 6.25rem;
+                            height: 3.125rem;
                             background-color: pink;
-                            border-radius: 8px;
-                            margin-top: 20px;
-                            margin-right: 20px;
+                            border-radius: .5rem;
                             display: flex;
                             justify-content: center;
                             align-items: center;
+                            padding: .5rem 1.25rem;
                             font-size: 1.25rem;
                             font-weight: bold;
                             color: #fff;
@@ -285,6 +318,25 @@ onUnmounted(() => {
                                 background-color: #fff;
                                 color: #000;
                             }
+                        }
+                    }
+
+
+                    /* 设置视口，确保移动端页面宽度适应设备 */
+                    @media (max-width: 768px) {
+                        html {
+                            font-size: .875rem;
+                        }
+                    }
+
+
+                    @media (max-width: 480px) {
+                        .container div {
+                            font-size: .875rem;
+                            width: 90%;
+                        }
+                        .text-labels {
+                            font-size: 20px;
                         }
                     }
                 }
@@ -303,15 +355,15 @@ onUnmounted(() => {
             position: fixed;
             z-index: 10;
             border: 1px solid rgba(255, 255, 255, 0.6);
-            border-radius: 3px;
-            font-size: 12px;
+            border-radius: .1875rem;
+            font-size: .75rem;
             text-transform: uppercase;
             color: #fff;
-            top: 20px;
-            left: 20px;
+            top: 1.25rem;
+            left: 1.25rem;
             display: flex;
             align-items: center;
-            padding: 10px;
+            padding: .625rem;
             cursor: pointer;
             transition: left .3s ease;
 
@@ -330,12 +382,12 @@ onUnmounted(() => {
         .wrapper {
             position: relative;
             z-index: 9;
-            max-width: 892px;
+            max-width: 56.25rem;
             margin: 0 auto;
-            padding: 0 10px;
+            padding: 2.5rem .625rem;
 
             .articles {
-                margin: 40px auto;
+                margin: 0 auto;
                 box-shadow: 8px 14px 38px rgba(39, 44, 49, .06), 1px 3px 8px rgba(39, 44, 49, .03);
                 background-color: rgba(255, 255, 255, .9);
                 border-radius: 5px;
@@ -391,7 +443,6 @@ onUnmounted(() => {
     padding: 20px 0;
     background-color: #232323;
     color: #888;
-    margin-top: 100px;
     line-height: 24px;
     text-align: center;
     z-index: 9;
