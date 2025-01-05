@@ -10,11 +10,14 @@
 
 a {
   font-weight: 500;
-  text-decoration: inherit;
+  outline: 0;
+  text-decoration: none;
+  color: #77b6ff;
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  font-size: 14px;
 }

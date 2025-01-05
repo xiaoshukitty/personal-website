@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import axios from "axios";
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { getCurrentDate } from '../utils/timeAll';
 import { MenuOutlined } from '@ant-design/icons-vue';
 import Particles from '../components/Particles/index.vue'
@@ -12,6 +12,19 @@ const currentTime = ref<string>('');
 import type { DrawerProps } from 'ant-design-vue';
 const placement = ref<DrawerProps['placement']>('left');
 const open = ref<boolean>(false);
+
+const pageSize = ref(20);
+const current1 = ref(3);
+
+const onShowSizeChange = (current: number, pageSize: number) => {
+    console.log(current, pageSize);
+};
+watch(pageSize, () => {
+    console.log('pageSize', pageSize.value);
+});
+watch(current1, () => {
+    console.log('current', current1.value);
+});
 
 const showDrawer = () => {
     open.value = true;
@@ -35,9 +48,26 @@ const handleScroll = () => {
         isShowSideBox.value = false;
     }
     isSticky.value = scrollY > 200;
+    sessionStorage.setItem('scrollPosition', window.scrollY.toString());
 };
 
+const restoreScrollPosition = () => {
+    const scrollPosition = sessionStorage.getItem('scrollPosition');
+    console.log('scrollPosition', scrollPosition);
 
+    if (scrollPosition) {
+        setTimeout(() => {
+            window.scrollTo(0, parseInt(scrollPosition));
+        }, 0); // 使用 setTimeout 延迟恢复滚动位置
+    }
+
+}
+const scrollOneScreen = () => {
+    window.scrollBy({
+        top: window.innerHeight, // 滚动一个屏幕的高度
+        behavior: "smooth", // 启用平滑滚动
+    });
+}
 
 
 // 更新当前时间的函数
@@ -50,14 +80,22 @@ let timer: number;
 
 // 组件挂载时添加事件监听
 onMounted(async () => {
+    // 在页面加载时恢复滚动位置
+    restoreScrollPosition();
     window.addEventListener('scroll', handleScroll);
     updateCurrentTime(); // 初始获取当前时间
     timer = setInterval(updateCurrentTime, 1000); // 每秒更新一次时间
+    // 初始化时设置一次
+    updateStyles();
+
+    // 监听窗口大小变化
+    window.addEventListener('resize', updateStyles);
 });
 
 // 组件卸载时移除事件监听
 onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll);
+    window.removeEventListener('resize', updateStyles);
     clearInterval(timer);
 });
 
@@ -94,8 +132,8 @@ onUnmounted(() => {
                         <h1>🍃本是椿花楸月、奈何北冥有鱼 🍂</h1>
                         <h1>励志文案</h1>
                         <div class="container">
-                            <div>首页</div>
-                            <div>分类</div>
+                            <div @click="scrollOneScreen">首页</div>
+                            <div @click="showDrawer">分类</div>
                             <div>留言板</div>
                             <div>链接</div>
                             <div>关于我</div>
@@ -110,18 +148,43 @@ onUnmounted(() => {
                 <span v-if="!isSticky" style="margin-left: 5px;">Menu</span>
             </div>
             <div class="wrapper">
-                <div class="scroll-2000 ">
-                    <div>1</div>
-                    <div>2</div>
-                    <div>3</div>
+                <div class="articles">
+                    <div class="item" v-for="n in 10" :key="n">
+                        <h2>
+                            <a href="">Java 提取和删除照片图片 Exif GPS 等隐私信息</a>
+                        </h2>
+                        <a class=" item-abstract" href="">照片图片 Exif 通过手机相机或者数码相机拍摄的照片都带有 Exif 元数据信息，比如下面这张照片： 它的 Exif
+                            信息为： 1Root: 2 ImageWi</a>
+                        <div class="item-meta">
+                            2020-06-21 &nbsp; · &nbsp;
+                            <a href="" class="item-hover">88250</a>
+                            &nbsp; · &nbsp;
+                            <a href="" class="item-tag">Exif&nbsp;</a>
+                            <a href="" class="item-tag">Java&nbsp;</a>
+                            <a href="" class="item-tag">图片处理&nbsp;&nbsp;&nbsp;</a>
+                            <a href="" class="item-tag">
+                                <span>0</span>
+                                评论
+                            </a>&nbsp;&nbsp;
+                            <a href="" class="item-tag">
+                                <span>2</span>
+                                浏览
+                            </a>
+                        </div>
+                    </div>
+                    <div class="pagination">
+                        <a-pagination :show-size-changer="false" v-model:current="current1" v-model:pageSize="pageSize"
+                            :total="500" @showSizeChange="onShowSizeChange" />
+                    </div>
                 </div>
             </div>
 
             <div class="side-box" v-if="isShowSideBox">
-                <a-back-top :visibility-height="0" /> <a-back-top :visibility-height="0" />
+                <a-back-top :visibility-height="0" />
             </div>
             <Particles />
         </div>
+
         <!-- 侧边栏盒子 -->
         <a-drawer :width="320" title="Menu菜单" :placement="placement" :open="open" @close="onClose">
             <div>
@@ -129,6 +192,9 @@ onUnmounted(() => {
             </div>
         </a-drawer>
     </section>
+    <footer class="footer">
+        123
+    </footer>
 </template>
 
 <style scoped lang="scss">
@@ -197,6 +263,7 @@ onUnmounted(() => {
 
                     .container {
                         display: flex;
+                        box-sizing: border-box;
 
                         div {
                             width: 100px;
@@ -208,7 +275,7 @@ onUnmounted(() => {
                             display: flex;
                             justify-content: center;
                             align-items: center;
-                            font-size: 20px;
+                            font-size: 1.25rem;
                             font-weight: bold;
                             color: #fff;
                             cursor: pointer;
@@ -260,8 +327,6 @@ onUnmounted(() => {
             transition: all 0.3s ease;
         }
 
-
-
         .wrapper {
             position: relative;
             z-index: 9;
@@ -269,18 +334,68 @@ onUnmounted(() => {
             margin: 0 auto;
             padding: 0 10px;
 
-            .scroll-2000 {
-                height: 125rem;
+            .articles {
                 margin: 40px auto;
                 box-shadow: 8px 14px 38px rgba(39, 44, 49, .06), 1px 3px 8px rgba(39, 44, 49, .03);
                 background-color: rgba(255, 255, 255, .9);
                 border-radius: 5px;
+
+                .item {
+                    border-bottom: 1px solid #f0f2f7;
+                    padding: 20px;
+
+                    h2 {
+                        a {
+                            color: #15171a;
+                            font-size: 24px;
+                            line-height: 24px;
+                        }
+                    }
+
+                    .item-abstract {
+                        display: block;
+                        line-height: 24px;
+                        color: #15171a;
+                        font-size: 16px;
+                        margin: 10px 0;
+                    }
+
+                    .item-meta {
+                        .item-tag {
+                            display: inline-block;
+                            color: #738a94;
+                            line-height: 14px;
+                            font-weight: 500;
+                            letter-spacing: .5px;
+                            text-transform: uppercase;
+                        }
+
+                        .item-hover:hover {
+                            text-decoration: underline;
+                        }
+                    }
+                }
+
+                .pagination {
+                    text-align: center;
+                    padding: 40px 0;
+                }
             }
         }
     }
 }
 
-
+.footer {
+    position: relative;
+    font-size: 12px;
+    padding: 20px 0;
+    background-color: #232323;
+    color: #888;
+    margin-top: 100px;
+    line-height: 24px;
+    text-align: center;
+    z-index: 9;
+}
 
 @media (max-width: 768px) {
     .header-bg {
