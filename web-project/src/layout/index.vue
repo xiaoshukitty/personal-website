@@ -3,7 +3,9 @@ import axios from "axios";
 import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { getCurrentDate } from '../utils/timeAll';
 import { MenuOutlined } from '@ant-design/icons-vue';
-import Particles from '../components/Particles/index.vue'
+import Particles from '../components/Particles/index.vue';
+import Main from './main/index.vue';
+import Footer from './footer/index.vue';
 
 const scrollPosition = ref(0);
 const isShowSideBox = ref(false);
@@ -13,19 +15,6 @@ import type { DrawerProps } from 'ant-design-vue';
 const placement = ref<DrawerProps['placement']>('left');
 const open = ref<boolean>(false);
 
-const pageSize = ref(20);
-const current1 = ref(3);
-
-const onShowSizeChange = (current: number, pageSize: number) => {
-    console.log(current, pageSize);
-};
-watch(pageSize, () => {
-    console.log('pageSize', pageSize.value);
-});
-watch(current1, () => {
-    console.log('current', current1.value);
-});
-
 const showDrawer = () => {
     open.value = true;
 };
@@ -33,7 +22,6 @@ const showDrawer = () => {
 const onClose = () => {
     open.value = false;
 };
-
 
 // 控制 div 是否吸附到页面的侧边
 const isSticky = ref(false);
@@ -144,37 +132,7 @@ onUnmounted(() => {
                 <MenuOutlined style="font-size: 14px;" />
                 <span v-if="!isSticky" style="margin-left: 5px;">Menu</span>
             </div>
-            <div class="wrapper" id="wrapper">
-                <div class="articles">
-                    <div class="item" v-for="n in 10" :key="n">
-                        <h2>
-                            <a href="">Java 提取和删除照片图片 Exif GPS 等隐私信息</a>
-                        </h2>
-                        <a class=" item-abstract" href="">照片图片 Exif 通过手机相机或者数码相机拍摄的照片都带有 Exif 元数据信息，比如下面这张照片： 它的 Exif
-                            信息为： 1Root: 2 ImageWi</a>
-                        <div class="item-meta">
-                            2020-06-21 &nbsp; · &nbsp;
-                            <a href="" class="item-hover">88250</a>
-                            &nbsp; · &nbsp;
-                            <a href="" class="item-tag">Exif&nbsp;</a>
-                            <a href="" class="item-tag">Java&nbsp;</a>
-                            <a href="" class="item-tag">图片处理&nbsp;&nbsp;&nbsp;</a>
-                            <a href="" class="item-tag">
-                                <span>0</span>
-                                评论
-                            </a>&nbsp;&nbsp;
-                            <a href="" class="item-tag">
-                                <span>2</span>
-                                浏览
-                            </a>
-                        </div>
-                    </div>
-                    <div class="pagination">
-                        <a-pagination :show-size-changer="false" v-model:current="current1" v-model:pageSize="pageSize"
-                            :total="500" @showSizeChange="onShowSizeChange" />
-                    </div>
-                </div>
-            </div>
+            <Main />
 
             <div class="side-box" v-if="isShowSideBox">
                 <a-back-top :visibility-height="0" />
@@ -188,10 +146,9 @@ onUnmounted(() => {
                 123
             </div>
         </a-drawer>
+        <Footer />
     </section>
-    <footer class="footer">
-        123
-    </footer>
+
 </template>
 
 <style scoped lang="scss">
@@ -257,40 +214,7 @@ onUnmounted(() => {
 
                     .text-labels {
                         font-size: 1.875rem;
-                        // cursor: pointer;
-                        // transition: transform 0.3s ease-in-out;
-
-                        // &:hover {
-                        //     transform: scale(1.5);
-                        // }
                     }
-
-                    // .container {
-                    //     display: flex;
-                    //     box-sizing: border-box;
-
-                    //     div {
-                    //         width: 100px;
-                    //         height: 50px;
-                    //         background-color: pink;
-                    //         border-radius: 8px;
-                    //         margin-top: 20px;
-                    //         margin-right: 20px;
-                    //         display: flex;
-                    //         justify-content: center;
-                    //         align-items: center;
-                    //         font-size: 1.25rem;
-                    //         font-weight: bold;
-                    //         color: #fff;
-                    //         cursor: pointer;
-                    //         transition: all 0.3s ease-in-out;
-
-                    //         &:hover {
-                    //             background-color: #fff;
-                    //             color: #000;
-                    //         }
-                    //     }
-                    // }
 
                     .container {
                         display: flex;
@@ -335,6 +259,7 @@ onUnmounted(() => {
                             font-size: .875rem;
                             width: 90%;
                         }
+
                         .text-labels {
                             font-size: 20px;
                         }
@@ -379,74 +304,9 @@ onUnmounted(() => {
             transition: all 0.3s ease;
         }
 
-        .wrapper {
-            position: relative;
-            z-index: 9;
-            max-width: 56.25rem;
-            margin: 0 auto;
-            padding: 2.5rem .625rem;
-
-            .articles {
-                margin: 0 auto;
-                box-shadow: 8px 14px 38px rgba(39, 44, 49, .06), 1px 3px 8px rgba(39, 44, 49, .03);
-                background-color: rgba(255, 255, 255, .9);
-                border-radius: 5px;
-
-                .item {
-                    border-bottom: 1px solid #f0f2f7;
-                    padding: 20px;
-
-                    h2 {
-                        a {
-                            color: #15171a;
-                            font-size: 24px;
-                            line-height: 24px;
-                        }
-                    }
-
-                    .item-abstract {
-                        display: block;
-                        line-height: 24px;
-                        color: #15171a;
-                        font-size: 16px;
-                        margin: 10px 0;
-                    }
-
-                    .item-meta {
-                        .item-tag {
-                            display: inline-block;
-                            color: #738a94;
-                            line-height: 14px;
-                            font-weight: 500;
-                            letter-spacing: .5px;
-                            text-transform: uppercase;
-                        }
-
-                        .item-hover:hover {
-                            text-decoration: underline;
-                        }
-                    }
-                }
-
-                .pagination {
-                    text-align: center;
-                    padding: 40px 0;
-                }
-            }
-        }
     }
 }
 
-.footer {
-    position: relative;
-    font-size: 12px;
-    padding: 20px 0;
-    background-color: #232323;
-    color: #888;
-    line-height: 24px;
-    text-align: center;
-    z-index: 9;
-}
 
 @media (max-width: 768px) {
     .header-bg {
