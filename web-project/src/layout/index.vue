@@ -1,30 +1,26 @@
 <script setup lang="ts">
-import axios from "axios";
-import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { getCurrentDate } from '../utils/timeAll';
-import { MenuOutlined } from '@ant-design/icons-vue';
 import Particles from '../components/Particles/index.vue';
 import Main from './main/index.vue';
 import Footer from './footer/index.vue';
+import MenuHeader from '../components/MenuHeader/index.vue';
+import MenuLeftDrawer from '../components/MenuLeftDrawer/index.vue';
 
 const scrollPosition = ref(0);
 const isShowSideBox = ref(false);
 const currentTime = ref<string>('');
-
-import type { DrawerProps } from 'ant-design-vue';
-const placement = ref<DrawerProps['placement']>('left');
-const open = ref<boolean>(false);
+const isSticky = ref(false);// 控制 div 是否吸附到页面的侧边
+const openDrawer = ref<boolean>(false);
 
 const showDrawer = () => {
-    open.value = true;
+    openDrawer.value = true;
 };
 
-const onClose = () => {
-    open.value = false;
-};
 
-// 控制 div 是否吸附到页面的侧边
-const isSticky = ref(false);
+const closeDrawer = () => {
+    openDrawer.value = false;
+};
 
 
 // 处理滚动事件的回调
@@ -41,8 +37,6 @@ const handleScroll = () => {
 
 const restoreScrollPosition = () => {
     const scrollPosition = sessionStorage.getItem('scrollPosition');
-    console.log('scrollPosition', scrollPosition);
-
     if (scrollPosition) {
         setTimeout(() => {
             window.scrollTo(0, parseInt(scrollPosition));
@@ -60,21 +54,20 @@ const scrollOneScreen = (val: string) => {
     }
 }
 
-
 // 更新当前时间的函数
-const updateCurrentTime = () => {
+const updateCurrentTime = (): void => {
     currentTime.value = getCurrentDate('yyyy-MM-dd HH:mm:ss', false) ?? ''
 };
 
 // 在组件挂载时启动定时器
-let timer: number;
+let timer: ReturnType<typeof setInterval>;
 
 // 组件挂载时添加事件监听
 onMounted(async () => {
     // 在页面加载时恢复滚动位置
     restoreScrollPosition();
     window.addEventListener('scroll', handleScroll);
-    updateCurrentTime(); // 初始获取当前时间
+    updateCurrentTime(); // 初始获取当前时间restoreScrollPosition
     timer = setInterval(updateCurrentTime, 1000); // 每秒更新一次时间
 });
 
@@ -128,24 +121,19 @@ onUnmounted(() => {
                 </div>
 
             </header>
-            <div class="menu" :class="{ 'sticky': isSticky }" @click="showDrawer">
-                <MenuOutlined style="font-size: 14px;" />
-                <span v-if="!isSticky" style="margin-left: 5px;">Menu</span>
-            </div>
+            <!-- 菜单 -->
+            <MenuHeader :isSticky="isSticky" @showDrawer="showDrawer" />
+            <!-- 内容 -->
             <Main />
-
             <div class="side-box" v-if="isShowSideBox">
                 <a-back-top :visibility-height="0" />
             </div>
+            <!-- 动画粒子 -->
             <Particles />
         </div>
-
         <!-- 侧边栏盒子 -->
-        <a-drawer :width="320" title="Menu菜单" :placement="placement" :open="open" @close="onClose">
-            <div>
-                123
-            </div>
-        </a-drawer>
+        <MenuLeftDrawer :openDrawer="openDrawer" @closeDrawer="closeDrawer" />
+        <!-- 底部 -->
         <Footer />
     </section>
 

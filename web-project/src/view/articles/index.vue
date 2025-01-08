@@ -2,12 +2,25 @@
 import Particles from '../../components/Particles/index.vue';
 import { MenuOutlined } from '@ant-design/icons-vue';
 import { ref, onMounted, onUnmounted, watch } from 'vue';
+import MenuHeader from '../../components/MenuHeader/index.vue';
+import MenuLeftDrawer from '../../components/MenuLeftDrawer/index.vue';
 
 // 控制 div 是否吸附到页面的侧边
 const isSticky = ref(false);
 const scrollPosition = ref(0);
-
+const openDrawer = ref<boolean>(false);
 const isShowSideBox = ref(false);
+
+
+const showDrawer = () => {
+    openDrawer.value = true;
+};
+
+
+const closeDrawer = () => {
+    openDrawer.value = false;
+};
+
 
 // 处理滚动事件的回调
 const handleScroll = () => {
@@ -34,10 +47,7 @@ onUnmounted(() => {
 
 <template>
     <div class="articles">
-        <div class="menu" :class="{ 'sticky': isSticky }" @click="showDrawer">
-            <MenuOutlined style="font-size: 14px;" />
-            <span v-if="!isSticky" style="margin-left: 5px;">Menu</span>
-        </div>
+        <MenuHeader :isSticky="isSticky" @showDrawer="showDrawer" />
         <div class="articles-top">
 
         </div>
@@ -76,6 +86,9 @@ onUnmounted(() => {
             <a-back-top :visibility-height="0" />
         </div>
         <Particles />
+
+        <!-- 侧边栏盒子 -->
+        <MenuLeftDrawer :openDrawer="openDrawer" @closeDrawer="closeDrawer" />
     </div>
 </template>
 
