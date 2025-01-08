@@ -263,35 +263,6 @@ onUnmounted(() => {
                 }
             }
         }
-
-        .menu {
-            position: fixed;
-            z-index: 10;
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            border-radius: .1875rem;
-            font-size: .75rem;
-            text-transform: uppercase;
-            color: #fff;
-            top: 1.25rem;
-            left: 1.25rem;
-            display: flex;
-            align-items: center;
-            padding: .625rem;
-            cursor: pointer;
-            transition: left .3s ease;
-
-            &:hover {
-                opacity: .6;
-            }
-        }
-
-        .sticky {
-            left: -2px !important;
-            font-size: 0;
-            background-color: #333;
-            transition: all 0.3s ease;
-        }
-
     }
 }
 
