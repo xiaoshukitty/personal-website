@@ -12,6 +12,17 @@ const homePage: RouteRecordRaw[] = [
       requiresAuth: true, // 这个页面需要认证才能访问
     },
   },
+  {
+    path: "/articles",
+    name: "articles",
+    component: () => import("@/view/articles/index.vue"),
+    meta: {
+      title: "文章",
+      keepAlive: true,
+      affix: true,
+      requiresAuth: true, // 这个页面需要认证才能访问
+    },
+  },
 ];
 
 export default homePage;
