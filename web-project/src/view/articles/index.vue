@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Particles from '../../components/Particles/index.vue';
-import { MenuOutlined } from '@ant-design/icons-vue';
 import { ref, onMounted, onUnmounted, watch } from 'vue';
 import MenuHeader from '../../components/MenuHeader/index.vue';
 import MenuLeftDrawer from '../../components/MenuLeftDrawer/index.vue';
