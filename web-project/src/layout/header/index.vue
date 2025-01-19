@@ -1,9 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import { getRandomRgbColor } from '@/utils/methods'
+
 let $router = useRouter();
 let activeIndex = ref(0);
 let navSearch = ref(false);
+let searchOutShow = ref(false);
+let menuShow = ref(false);
+let menuColumn = ref(false);
 
 interface Tab {
     name: string,
@@ -47,10 +52,49 @@ const onBlur = (event: FocusEvent) => {
     navSearch.value = false;
 }
 
+//点击 搜索 icon
+const searchOutput = (val: string) => {
+    if (val == 'search') {
+        searchOutShow.value = !searchOutShow.value;
+    } else {
+        if (searchOutShow.value) {
+            searchOutShow.value = false;
+        }
+        menuShow.value = !menuShow.value;
+    }
+}
+
+//关闭 mask
+const maskShow = () => {
+    searchOutShow.value = false;
+    menuShow.value = false;
+}
+
 const goToBack = (item: Tab, index: number) => {
     activeIndex.value = index
     $router.push({ path: item.path })
 }
+
+//打开 menu 菜单
+const openMenu = () => {
+    menuColumn.value = !menuColumn.value
+}
+
+watch(() => searchOutShow.value, (newVal) => {
+    if (newVal) {
+        document.body.style.overflow = 'hidden'
+    } else {
+        document.body.style.overflow = 'auto'
+    }
+})
+
+watch(() => menuShow.value, (newVal) => {
+    if (newVal) {
+        document.body.style.overflow = 'hidden'
+    } else {
+        document.body.style.overflow = 'auto'
+    }
+})
 
 </script>
 
@@ -58,7 +102,8 @@ const goToBack = (item: Tab, index: number) => {
     <header :class="['header', { 'header-active': (porps.scrollPosition >= 80 && !porps.isShowSideBox) }]">
         <div class="header-above">
             <div class="shu-container">
-                <SvgIcon class="header-above-logo-icon-listview" name="listview" :width="'20px'" :height="'20px'" />
+                <SvgIcon class="header-above-logo-icon-listview" name="listview" :width="'20px'" :height="'20px'"
+                    @click="searchOutput" />
                 <a href="" class="header-above-logo">
                     <img src="https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280" alt="">
                 </a>
@@ -79,9 +124,8 @@ const goToBack = (item: Tab, index: number) => {
                         </a>
                     </nav>
                 </form>
-
-                <SvgIcon class="header-above-search-icon" name="search" :width="'25px'" :height="'25px'"
-                    :color="'#606266'" />
+                <SvgIcon @click="searchOutput('search')" class="header-above-search-icon" name="search" :width="'25px'"
+                    :height="'25px'" :color="'#606266'" />
             </div>
         </div>
         <div class="header-below">
@@ -95,6 +139,100 @@ const goToBack = (item: Tab, index: number) => {
                 </div>
             </div>
         </div>
+        <div :class="['header-searchout', { 'header-searchout-active': searchOutShow }]">
+            <div class="shu-container">
+                <div class="header-searchout-inner">
+                    <form class="search">
+                        <input maxlength="16" autocomplete="off" placeholder="请输入关键字..." type="text" class="input">
+                        <button type="submit" class="submit">search</button>
+                    </form>
+                    <div class="title">
+                        <SvgIcon class="icon" name="search" :width="'25px'" :height="'25px'" :color="'#606266'" />
+                        标签搜索
+                    </div>
+                    <ul class="ul-cloud">
+                        <li class="li-cloud" v-for="i in 20" :key="i">
+                            <a href="#" :style="'background:' + getRandomRgbColor()">{{ '年年' }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div :class="['header-slideout', { ' header-slideout-active': menuShow }]">
+            <img class="header-sildout-img" src="https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280"
+                alt="">
+            <div class="header-sildout-author">
+                <img class="header-sildout-author-img"
+                    src="https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280" alt="">
+
+                <div class="info">
+                    <a href="#" class="link">xiaoshu</a>
+                    <p class="motto">有钱终成眷属，没钱亲眼目睹</p>
+                </div>
+            </div>
+            <ul class="header-sildout-count">
+                <li class="count-li">
+                    <SvgIcon class="icon" name="search" :width="'15px'" :height="'15px'" />
+                    <span>
+                        累计撰写 <strong>6,603</strong> 篇文章
+                    </span>
+                </li>
+                <li class="count-li">
+                    <SvgIcon class="icon" name="search" :width="'15px'" :height="'15px'" />
+                    <span>
+                        累计收到 <strong>1,023</strong> 条评论
+                    </span>
+                </li>
+            </ul>
+            <ul class="header-sildout-menu">
+                <li>
+                    <a href="#" class="link">
+                        <span>首页</span>
+                    </a>
+                </li>
+                <li @click="openMenu">
+                    <a href="#" class="link">
+                        <span>栏目</span>
+                        <SvgIcon class="icon" :name="menuColumn ? 'arrowdown' : 'arrowright'" :width="'20px'"
+                            :height="'20px'" />
+                    </a>
+                    <ul class="ul-slides" :style="menuColumn ? 'display:block' : 'display:none'">
+                        <li>
+                            <a href="#" class="link">默认分类</a>
+                        </li>
+                        <li>
+                            <a href="#" class="link">推荐</a>
+                        </li>
+                        <li>
+                            <a href="#" class="link">图册</a>
+                        </li>
+                        <li>
+                            <a href="#" class="link">人物传</a>
+                        </li>
+                        <li>
+                            <a href="#" class="link">吃瓜</a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- <li @click="openMenu">
+                    <a href="#" class="link">
+                        <span>页面</span>
+                        <SvgIcon class="icon" :name="menuColumn ? 'arrowdown' : 'arrowright'" :width="'20px'"
+                            :height="'20px'" />
+                    </a>
+                    <ul class="ul-slides" :style="menuColumn ? 'display:block' : 'display:none'">
+                        <li>
+                            <a href="#" class="link">归档</a>
+                        </li>
+                        <li>
+                            <a href="#" class="link">关于</a>
+                        </li>
+                    </ul>
+                </li> -->
+            </ul>
+        </div>
+        <div :class="['header-mask', { ' header-mask-active': (searchOutShow || menuShow) }, { 'header-mask-slideout': menuShow }]"
+            @click="maskShow"></div>
     </header>
 </template>
 
@@ -336,14 +474,263 @@ const goToBack = (item: Tab, index: number) => {
                 }
             }
         }
-
     }
 
-    .shu-container {
-        display: flex;
-        width: 100%;
-        margin: 0 auto;
-        padding: 0 15px;
+    .header-searchout {
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        z-index: 890;
+        background: var(--background);
+        border-top: 1px solid var(--classC);
+        transform: translate3d(0, -100%, 0);
+        transition: transform 0.35s, visibility 0.35s;
+        visibility: hidden;
+
+        .header-searchout-inner {
+            padding: 15px 0;
+            width: 100%;
+
+            .search {
+                width: 100%;
+                display: flex;
+                align-items: center;
+
+                .input {
+                    flex: 1;
+                    height: 36px;
+                    padding: 0 10px;
+                    border: 1px solid var(--classB);
+                    border-right: none;
+                    border-radius: 2px 0 0 2px;
+                    color: var(--routine);
+                    background: var(--classD);
+
+                    &:focus {
+                        outline: none;
+                        background: var(--background);
+                        border-color: var(--theme);
+                        padding-right: 28px;
+                    }
+                }
+
+                .submit {
+                    padding: 0 10px;
+                    height: 36px;
+                    border: none;
+                    background: var(--theme);
+                    color: #fff;
+                    border-radius: 0 2px 2px 0;
+                }
+            }
+
+            .title {
+                color: var(--routine);
+                padding: 15px 0 10px;
+                font-size: 16px;
+                display: flex;
+                align-items: center;
+
+                .icon {
+                    width: 22px;
+                    height: 22px;
+                    fill: var(--routine);
+                    margin-right: 5px;
+                }
+            }
+
+            .ul-cloud {
+                display: flex;
+                flex-wrap: wrap;
+                margin: 0 -5px -5px;
+
+                .li-cloud {
+                    padding: 5px;
+
+                    a {
+                        display: block;
+                        padding: 0 10px;
+                        height: 24px;
+                        line-height: 24px;
+                        border-radius: 2px;
+                        font-size: 12px;
+                        color: #fff;
+                        background: #EA5455;
+                    }
+                }
+            }
+        }
     }
+
+    .header-searchout-active {
+        visibility: visible;
+        transform: translate3d(0, 0, 0);
+    }
+
+    .header-slideout {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 80%;
+        z-index: 1020;
+        background: var(--classD);
+        transform: translate3d(-100%, 0, 0);
+        visibility: hidden;
+        transition: transform 0.35s, visibility 0.35s;
+        overflow-y: auto;
+        padding: 135px 15px 15px;
+
+        .header-sildout-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            -o-object-fit: cover;
+            object-fit: cover;
+            z-index: -1;
+
+        }
+
+
+        .header-sildout-author {
+            display: flex;
+            margin-bottom: 15px;
+            background: var(--background);
+            border-radius: var(--radius-wrap);
+            padding: 15px;
+            box-shadow: var(--box-shadow);
+
+            .header-sildout-author-img {
+                width: 50px;
+                height: 50px;
+                margin-right: 10px;
+                border-radius: var(--radius-inner);
+            }
+
+            .info {
+                overflow: hidden;
+                line-height: 25px;
+
+                .link {
+                    display: block;
+                    font-size: 15px;
+                    font-weight: 500;
+                    color: var(--main);
+                }
+
+                .motto {
+                    font-size: 12px;
+                    color: var(--routine);
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                }
+            }
+        }
+
+        .header-sildout-count {
+            background: var(--background);
+            border-radius: var(--radius-wrap);
+            padding: 10px 15px;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 15px !important;
+
+            .count-li {
+                display: flex;
+                align-items: center;
+                color: var(--routine);
+                padding: 5px 0;
+
+                .icon {
+                    width: 15px;
+                    height: 15px;
+                    fill: var(--routine);
+                    margin-right: 5px;
+                }
+
+                strong {
+                    font-weight: 500;
+                    color: var(--theme);
+                }
+            }
+        }
+
+        .header-sildout-menu {
+            background: var(--background);
+            padding: 10px 15px;
+            border-radius: var(--radius-wrap);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+
+            li {
+                .link {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 10px 0;
+                    color: var(--main);
+                    transition: color 0.15s;
+                }
+
+                .ul-slides {
+                    border-left: 1px solid var(--classC);
+                    padding-left: 15px;
+
+                    .link {
+                        color: var(--routine);
+                    }
+                }
+
+                .icon {
+                    fill: var(--minor);
+                    transition: transform 0.15s, fill 0.15s;
+                }
+            }
+
+        }
+    }
+
+    .header-slideout-active {
+        visibility: visible;
+        transform: translate3d(0, 0, 0);
+    }
+
+
+    .header-mask {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.65);
+        backdrop-filter: blur(5px);
+        opacity: 0;
+        visibility: hidden;
+        transition: visibility 0.35s, opacity 0.35s;
+        z-index: 880;
+    }
+
+    .header-mask-active {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .header-mask-slideout {
+        z-index: 1001;
+    }
+
+}
+
+
+
+
+.shu-container {
+    display: flex;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
 }
 </style>
