@@ -11,6 +11,36 @@ const homePage: RouteRecordRaw[] = [
       affix: true,
       requiresAuth: true, // 这个页面需要认证才能访问
     },
+    redirect: "/homeMain",
+    children: [
+      {
+        path: "homeMain",
+        component: () => import("@/view/homeMain/index.vue"),
+        meta: {
+          title: "首页",
+          keepAlive: true,
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "blogsData",
+        component: () => import("@/view/blogsData/index.vue"),
+        meta: {
+          title: "归档",
+          keepAlive: true,
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "about",
+        component: () => import("@/view/about/index.vue"),
+        meta: {
+          title: "关于",
+          keepAlive: true,
+          requiresAuth: true,
+        },
+      },
+    ],
   },
   {
     path: "/articles",
