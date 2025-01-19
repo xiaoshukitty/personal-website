@@ -1,0 +1,228 @@
+@media (min-width: 576px) {
+  .shu-container {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .shu-container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .shu-container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .shu-container {
+    max-width: 1140px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .shu-container {
+    max-width: 1320px;
+  }
+}
+
+@media (max-width: 768px) {
+  html .content-list-item.default .thumbnail {
+    width: 120px !important;
+    height: 80px !important;
+    margin-right: 10px !important;
+  }
+
+  html .content-list-item .thumbnail time {
+    display: none !important;
+  }
+
+  html .content-list-item .meta .meta-last {
+    display: none !important;
+  }
+
+  html .content-list-item .meta .meta-ul {
+    width: 100% !important;
+  }
+
+  html .content-list-item .meta .meta-ul li {
+    display: none !important;
+  }
+
+  html .content-list-item .meta .meta-ul li:nth-child(1) {
+    display: block !important;
+  }
+
+  html .content-list-item .meta .meta-ul li:nth-child(2) {
+    display: block !important;
+    margin-left: auto !important;
+  }
+
+  html .content-list-item .meta .meta-ul .meta-ul-li::after {
+    display: none !important;
+  }
+
+  html .content-list-item .information .abstract {
+    display: none !important;
+  }
+
+  html .content-list-item .information .title {
+    font-size: 15px !important;
+    margin-bottom: 0 !important;
+  }
+
+  html .shu-content-hot-list {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  html .shu-content .shu-content-banner .shu-content-banner-recommend .item {
+    height: 100px !important;
+    margin: 0 !important;
+  }
+
+  html .shu-content .shu-content-banner .swiper-container {
+    height: 180px !important;
+  }
+
+  html .header-below {
+    display: none !important;
+  }
+
+  html .header-above-nav {
+    display: none !important;
+  }
+
+  html .header-above-logo {
+    height: 55px !important;
+    margin-right: 0 !important;
+  }
+  html .header-above-logo-icon-listview {
+    display: block !important;
+  }
+
+  html .header-above-search-icon {
+    margin-left: 0 !important;
+  }
+
+  html .header-above .shu-container {
+    justify-content: space-between;
+  }
+
+  html .shu-content-title ul .item {
+    display: none;
+  }
+  html .shu-content-title ul .item:nth-child(1),
+  html .shu-content-title ul .item:nth-child(2) {
+    display: block !important;
+  }
+
+  /* 关于的页面 */
+  html .about-title {
+    font-size: 18px !important;
+  }
+
+  html .about-detail-count::after {
+    display: none !important;
+  }
+
+  html .about-detail-count-information .meta .meta-item {
+    justify-content: center !important;
+  }
+
+  html .about-detail-count-time,
+  html .about-detail-count-information .avatar,
+  html .about-detail-count-information .meta .author,
+  html .about-detail-count-information .meta .meta-item span:nth-child(2),
+  html .about-detail-count-information .meta .meta-item span:nth-child(3) {
+    display: none !important;
+  }
+  html .about-detail-count-information {
+    width: 100% !important;
+  }
+
+  html .about-detail-count-information .meta {
+    width: 100% !important;
+    height: unset !important;
+  }
+
+  html .about-detail-article {
+    font-size: 14px !important;
+  }
+
+  html .about-comment {
+    position: relative !important;
+  }
+
+  html .about-comment .about-comment-title {
+    font-size: 18px !important;
+    line-height: 32px !important;
+    text-align: left !important;
+  }
+}
+
+@media (max-width: 992px) {
+  html .shu-content-hot .shu-content-hot-list .item .link .inner .image {
+    height: 95px !important;
+  }
+
+  html .shu-content-banner .shu-content-banner-recommend .item {
+    height: 135px !important;
+    margin: 0 !important;
+  }
+
+  html .shu-content-banner .swiper-container {
+    height: 250px !important;
+  }
+
+  html .header-above-search {
+    display: none !important;
+  }
+
+  html .header-above-search-icon {
+    display: block !important;
+  }
+
+  html .shu-aside {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1200px) {
+  html .shu-content-banner {
+    display: block !important;
+  }
+
+  html .swiper-container {
+    height: 280px !important;
+  }
+
+  html .shu-content-banner-recommend {
+    padding-top: 15px !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 15px !important;
+  }
+
+  html .shu-content-banner-recommend .item {
+    height: 145px !important;
+    margin: 0 !important;
+  }
+
+  html .shu-content-hot-list .item .link .inner .image {
+    height: 90px !important;
+  }
+
+  html .shu-content-hot-list {
+    column-gap: 10px !important;
+  }
+
+  html .content-list-item .thumbnail {
+    width: 185px !important;
+    height: 125px !important;
+  }
+}

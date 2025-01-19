@@ -23,7 +23,8 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        // additionalData: `@import "@/styles/variables.scss";`, // 引入全局 SCSS 文件
+        // 这个路径是相对你的项目根目录的
+        additionalData: `@import "@/styles/variables.scss";`,
       },
     },
   },

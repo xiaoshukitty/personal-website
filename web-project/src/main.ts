@@ -5,6 +5,8 @@ import pinia from "./stores/index";
 import Antd from "ant-design-vue";
 import "ant-design-vue/dist/reset.css";
 import router from "./router/index";
+//引入全局样式
+import "@/styles/index.scss";
 
 import SvgIcon from "@/components/SvgIcon/src/index.vue";
 import ProgressBar from "@/components/ProgressBar/index.vue";
