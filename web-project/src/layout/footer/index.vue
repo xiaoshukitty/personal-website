@@ -2,20 +2,23 @@
 </script>
 
 <template>
-    <footer class="footer">
-        123
+    <footer class="shu-footer">
+        <div class="shu-container">
+            底部
+        </div>
     </footer>
 </template>
 
 <style scoped lang="scss">
-.footer {
-    position: relative;
-    font-size: 12px;
-    padding: 20px 0;
-    background-color: #232323;
-    color: #888;
-    line-height: 24px;
-    text-align: center;
-    z-index: 9;
+.shu-footer {
+    border-top: 1px solid var(--classB);
+    color: var(--minor);
+
+    .shu-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 65px;
+    }
 }
 </style>
