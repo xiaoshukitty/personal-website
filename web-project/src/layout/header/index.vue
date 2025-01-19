@@ -2,8 +2,8 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 let $router = useRouter();
-
-let activeIndex = ref(0)
+let activeIndex = ref(0);
+let navSearch = ref(false);
 
 interface Tab {
     name: string,
@@ -37,6 +37,16 @@ const porps = defineProps({
     }
 })
 
+// 获取焦点
+const onFocus = (event: FocusEvent) => {
+    navSearch.value = true;
+}
+
+//失去焦点
+const onBlur = (event: FocusEvent) => {
+    navSearch.value = false;
+}
+
 const goToBack = (item: Tab, index: number) => {
     activeIndex.value = index
     $router.push({ path: item.path })
@@ -53,17 +63,23 @@ const goToBack = (item: Tab, index: number) => {
                     <img src="https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280" alt="">
                 </a>
                 <div class="header-above-nav">
-                    <!-- <a href="" class="item active">首页</a>
-                    <a href="" class="item">归档</a>
-                    <a href="" class="item">关于</a> -->
                     <div v-for="(item, index) in tabs" :key="index"
                         :class="['item', { 'active': activeIndex === index }]" @click="goToBack(item, index)">{{
                             item.name }}</div>
                 </div>
                 <form action="" class="header-above-search">
-                    <input type="text" placeholder="请输入关键词" class="header-above-search-input">
+                    <input type="text" placeholder="请输入关键词" class="header-above-search-input" @focus="onFocus"
+                        @blur="onBlur">
                     <button type="submit" class="header-above-search-btn">Search</button>
+                    <nav class="result active" v-if="navSearch">
+                        <a href="#" class="item" v-for="(i, index) in 5" :key="i">
+                            <span class="sort">{{ index + 1 }}</span>
+                            <span class="text">经典H动态图：雨后小故事、凌辱小故事、自行车小故事、家教小故事</span>
+                            <span class="views">44,860 阅读</span>
+                        </a>
+                    </nav>
                 </form>
+
                 <SvgIcon class="header-above-search-icon" name="search" :width="'25px'" :height="'25px'"
                     :color="'#606266'" />
             </div>
@@ -194,6 +210,7 @@ const goToBack = (item: Tab, index: number) => {
                     border-radius: 17px 0 0 17px;
 
                     &:focus {
+                        outline: none;
                         background: var(--background);
                         border-color: var(--theme);
                         padding-right: 28px;
@@ -209,6 +226,83 @@ const goToBack = (item: Tab, index: number) => {
                     color: #fff;
                     border-radius: 0 17px 17px 0;
                     padding: 0 10px;
+                }
+
+                .result {
+                    position: absolute;
+                    z-index: 2;
+                    top: 60px;
+                    left: 0;
+                    right: 0;
+                    background: var(--background);
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+                    border-radius: var(--radius-inner);
+                    visibility: hidden;
+                    opacity: 0;
+                    transition: visibility 0.35s, opacity 0.35s, transform 0.35s;
+                    transform: translate3d(0, 15px, 0);
+
+                    .item {
+                        height: 40px;
+                        line-height: 40px;
+                        border-bottom: 1px solid var(--classD);
+                        display: flex;
+                        align-items: center;
+                        overflow: hidden;
+                        padding: 0 10px;
+                        transition: background 0.35s;
+
+                        .sort {
+                            color: #fff;
+                            background: #7f7f8c;
+                            width: 18px;
+                            height: 18px;
+                            line-height: 18px;
+                            border-radius: 2px;
+                            text-align: center;
+                            margin-right: 8px;
+                            font-weight: 500;
+                        }
+
+                        .text {
+                            flex: 1;
+                            min-width: 0;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            color: var(--routine);
+                            font-size: 12px;
+                        }
+
+                        .views {
+                            color: var(--seat);
+                            font-size: 12px;
+                            margin-left: 5px;
+                        }
+
+                        &:nth-child(1) .sort {
+                            background: #fe2d46;
+                        }
+
+                        &:nth-child(2) .sort {
+                            background: #f60;
+                        }
+
+                        &:nth-child(3) .sort {
+                            background: #faa90e;
+                        }
+
+                        &:hover {
+                            background: var(--classD);
+                        }
+                    }
+                }
+
+                .active {
+                    -webkit-transform: translate3d(0, 0, 0);
+                    transform: translate3d(0, 0, 0);
+                    opacity: 1;
+                    visibility: visible;
                 }
             }
 
