@@ -9,6 +9,7 @@ let navSearch = ref(false);
 let searchOutShow = ref(false);
 let menuShow = ref(false);
 let menuColumn = ref(false);
+let navTabIndex = ref(-1);
 
 interface Tab {
     name: string,
@@ -29,6 +30,25 @@ const tabs = [
         path: '/about'
     }
 ]
+
+const navTab = [
+    {
+        name: '默认分类',
+    },
+    {
+        name: '推荐',
+    },
+    {
+        name: '图册',
+    },
+    {
+        name: '人物传',
+    },
+    {
+        name: '吃瓜',
+    }
+]
+
 
 
 const porps = defineProps({
@@ -78,6 +98,12 @@ const goToBack = (item: Tab, index: number) => {
 //打开 menu 菜单
 const openMenu = () => {
     menuColumn.value = !menuColumn.value
+}
+
+//切换 navTab
+const navTabClick = (index: number) => {
+    navTabIndex.value = index;
+    $router.push({ path: 'categoryArticles', query: { index } })
 }
 
 watch(() => searchOutShow.value, (newVal) => {
@@ -131,14 +157,14 @@ watch(() => menuShow.value, (newVal) => {
         <div class="header-below">
             <div class="shu-container">
                 <div class="header-below-nav">
-                    <a href="" class="item">默认分类</a>
-                    <a href="" class="item">推荐</a>
-                    <a href="" class="item">图册</a>
-                    <a href="" class="item">人物传</a>
-                    <a href="" class="item">吃瓜</a>
+                    <span v-for="(item, index) in navTab" :key="index"
+                        :class="['item', navTabIndex == index ? 'header-below-nav-active' : '']"
+                        @click="navTabClick(index)">{{ item.name }}</span>
                 </div>
             </div>
         </div>
+
+        <!-- 768px 出现的 -->
         <div :class="['header-searchout', { 'header-searchout-active': searchOutShow }]">
             <div class="shu-container">
                 <div class="header-searchout-inner">
@@ -158,6 +184,8 @@ watch(() => menuShow.value, (newVal) => {
                 </div>
             </div>
         </div>
+
+        <!-- 侧边 menu -->
         <div :class="['header-slideout', { ' header-slideout-active': menuShow }]">
             <img class="header-sildout-img" src="https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280"
                 alt="">
@@ -471,6 +499,11 @@ watch(() => menuShow.value, (newVal) => {
                     line-height: 45px;
                     transition: color 0.35s;
                     white-space: nowrap;
+                    cursor: pointer;
+                }
+
+                .header-below-nav-active {
+                    color: var(--theme);
                 }
             }
         }

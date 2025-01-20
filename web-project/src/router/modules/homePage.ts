@@ -40,6 +40,15 @@ const homePage: RouteRecordRaw[] = [
           requiresAuth: true,
         },
       },
+      {
+        path: "categoryArticles",
+        component: () => import("@/view/categoryArticles/index.vue"),
+        meta: {
+          title: "类别",
+          keepAlive: true,
+          requiresAuth: true,
+        },
+      },
     ],
   },
   {

@@ -119,6 +119,7 @@ watch(() => props.activeIndex, (val) => {
     item.value = val + 2;
     setTimeout(() => {
         loadingList.value = true;
+        articlesList.value = articlesList.value.slice(0, -2) // 测试数据
     }, 1000)
 })
 
