@@ -1,4 +1,17 @@
 <script setup lang="ts">
+import TagCloud from './components/tagCloud/index.vue';
+
+const tags = [
+    { name: '01. 人员招聘难', color: '#006666' },
+    { name: '02. 人才复制难', color: '#009999' },
+    { name: '03. 门店管理难', color: '#333333' },
+    { name: '04. 客户引流难', color: '#660099' },
+    { name: '05. 客户不稳定', color: '#990066' },
+    { name: '06. 技术门槛高', color: '#CC0099' },
+    { name: '07. 营销策划能力弱', color: '#CC3300' },
+    { name: '08. 行业内卷利润低', color: '#FF9900' },
+    { name: '09. 产品严重同质化', color: '#006633' },
+]
 </script>
 
 <template>
@@ -28,6 +41,7 @@
                 </li>
             </ul>
         </section>
+        <tag-cloud :tags="tags" width="200" height="200" radius="100"></tag-cloud>
     </aside>
 </template>
 
@@ -193,5 +207,4 @@
         }
     }
 }
-
 </style>
