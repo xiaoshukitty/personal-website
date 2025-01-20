@@ -1,4 +1,39 @@
 <script setup lang="ts">
+import { ref, } from 'vue';
+import ArticlesList from '../../components/ArticlesList/index.vue';
+
+
+const tabList = ref([
+    {
+        name: '最新文章',
+        key: 'recommend'
+    },
+    {
+        name: '热门文章',
+        key: 'hot'
+    },
+    {
+        name: '评论最多',
+        key: 'new'
+    },
+    {
+        name: '评论最多',
+        key: 'front'
+    },
+    {
+        name: '点赞最多',
+        key: 'back'
+    },
+])
+let activeIndex = ref(0);
+let tabWidth = ref<HTMLElement | null>(null);
+let activeTabLeft = ref(0);
+let activeTabWidth = ref(56.0059)
+const changeTab = (index: number) => {
+    activeIndex.value = index;
+    activeTabLeft.value = ((tabWidth.value[index].offsetWidth) + 20) * index;
+}
+
 </script>
 
 <template>
@@ -81,47 +116,15 @@
             </div>
             <div class="shu-content-title">
                 <ul>
-                    <li class="item active">最新文章</li>
-                    <li class="item">热门文章</li>
-                    <li class="item">评论最多</li>
-                    <li class="item">点赞最多</li>
-                    <li class="line" style="left: 0px; width: 56.0059px;"></li>
-                </ul>
-            </div>
-            <div class="shu-content-list">
-                <ul class="content-list">
-                    <li class="content-list-item default" v-for="i in 10" :key="i">
-                        <div class="line"></div>
-                        <a href="" class="thumbnail">
-                            <img src="https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280" alt="">
-                            <time>2024-05-11</time>
-
-                        </a>
-                        <div class="information">
-                            <a href="" class="title">
-                                <span class="badge">
-                                    置顶
-                                </span>
-                                将进酒·君不见
-                            </a>
-                            <a href="" class="abstract">君不见，黄河之水天上来，奔流到海不复回。
-                                君不见，高堂明镜悲白发，朝如青丝暮成雪。
-                            </a>
-                            <div class="meta">
-                                <ul class="meta-ul">
-                                    <li class="meta-ul-li">2024年05月11日</li>
-                                    <li class="meta-ul-li">4,626 阅读</li>
-                                    <li>4 点赞</li>
-                                </ul>
-                                <div class="meta-last">
-                                    <SvgIcon class="icon" name="picture" :width="'15px'" :height="'15px'" />
-                                    <a href="" class="link">图册</a>
-                                </div>
-                            </div>
-                        </div>
+                    <li v-for="(item, index) in tabList" :key="index"
+                        :class="['item', index === activeIndex ? 'active' : '']" @click="changeTab(index)"
+                        ref="tabWidth">
+                        {{ item.name }}
                     </li>
+                    <li class="line" :style="{ 'left': activeTabLeft + 'px', 'width': activeTabWidth + 'px' }"></li>
                 </ul>
             </div>
+            <ArticlesList :activeIndex="activeIndex"></ArticlesList>
         </div>
         <div>
             <div class="shu-pagination">查看更多</div>
@@ -324,168 +327,6 @@
 
                 .active {
                     color: var(--theme);
-                }
-            }
-        }
-
-        .shu-content-list {
-            .content-list {
-                .content-list-item {
-                    position: relative;
-                    width: 100%;
-                    border-bottom: 1px solid var(--classC);
-                    padding: 15px 0;
-
-                    .line {
-                        position: absolute;
-                        z-index: 1;
-                        top: 15px;
-                        left: -15px;
-                        width: 4px;
-                        height: 25px;
-                        border-radius: 2px;
-                        background: var(--theme);
-                        transform: scaleY(0);
-                        transition: transform 0.35s;
-                    }
-
-                    &:hover .line {
-                        transform: scaleY(1);
-                    }
-                }
-
-                .default {
-                    display: flex;
-                    position: relative;
-
-                    .thumbnail {
-                        flex-shrink: 0;
-                        position: relative;
-                        width: 210px;
-                        height: 140px;
-                        margin-right: 15px;
-                        overflow: hidden;
-
-                        img {
-                            width: 100%;
-                            height: 100%;
-                            object-fit: cover;
-                            border-radius: var(--radius-inner);
-                            transition: opacity 0.35s;
-                        }
-
-                        time {
-                            position: absolute;
-                            z-index: 1;
-                            top: 5px;
-                            right: 5px;
-                            background: var(--theme);
-                            height: 20px;
-                            line-height: 20px;
-                            padding: 0 8px;
-                            color: #fff;
-                            font-size: 12px;
-                            border-radius: 10px;
-                            transition: transform 0.35s;
-                            transform: translate3d(120%, 0, 0);
-                        }
-                    }
-
-                    .information {
-                        display: flex;
-                        flex-direction: column;
-                        flex: 1;
-                        min-width: 0;
-
-                        .title {
-                            margin-bottom: 10px;
-                            display: -webkit-box;
-                            -webkit-line-clamp: 2;
-                            -webkit-box-orient: vertical;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                            word-break: break-word;
-                            color: var(--main);
-                            font-size: 18px;
-                            line-height: 24px;
-                            max-height: 48px;
-                            transition: color 0.35s;
-
-                            .badge {
-                                display: inline-block;
-                                height: 20px;
-                                line-height: 20px;
-                                background-image: -webkit-linear-gradient(0deg, #3ca5f6 0%, #a86af9 100%);
-                                color: #fff;
-                                font-size: 12px;
-                                margin-right: 5px;
-                                border-radius: 2px;
-                                padding: 0 8px;
-                                white-space: nowrap;
-                                vertical-align: 2px;
-                            }
-                        }
-
-                        .abstract {
-                            display: -webkit-box;
-                            -webkit-line-clamp: 2;
-                            -webkit-box-orient: vertical;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                            color: var(--minor);
-                            word-break: break-word;
-                            line-height: 22px;
-                            max-height: 44px;
-                            opacity: 0.85;
-                        }
-
-                        .meta {
-                            display: flex;
-                            align-items: center;
-                            margin-top: auto;
-                            color: var(--minor);
-                            font-size: 13px;
-
-                            .meta-ul {
-                                display: flex;
-                                align-items: center;
-
-                                .meta-ul-li {
-                                    &::after {
-                                        content: '/';
-                                    }
-                                }
-
-                                li {
-                                    color: var(--seat);
-                                    padding: 0 5px;
-                                }
-                            }
-
-                            .meta-last {
-                                margin-left: auto;
-                                display: flex;
-                                align-items: center;
-
-                                .icon {
-                                    margin-right: 3px;
-                                }
-
-                                .link {
-                                    color: var(--minor);
-                                }
-                            }
-                        }
-
-                    }
-
-                    &:hover .thumbnail time {
-                        transform: translate3d(0, 0, 0);
-                    }
-
-                    &:hover .thumbnail img {
-                        opacity: 0.8;
-                    }
                 }
             }
         }

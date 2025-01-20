@@ -123,6 +123,21 @@
     top: 55px !important;
   }
 
+  /* 首页 -  homeMain -  ArticlesList*/
+  html .content-list-loading .item .thumbnail {
+    width: 120px !important;
+    height: 80px !important;
+  }
+
+  html .content-list-loading .information .title {
+    margin-bottom: 10px !important;
+    height: 20px !important;
+  }
+
+  html .content-list-loading .information .abstract p {
+    height: 15px !important;
+  }
+
   /* 关于的页面 */
   html .about-title {
     font-size: 18px !important;
@@ -191,6 +206,12 @@
 
   html .shu-aside {
     display: none !important;
+  }
+
+  /* 首页 -  homeMain -  ArticlesList*/
+  html .content-list-loading  .thumbnail {
+    width: 180px !important;
+    height: 125px !important;
   }
 }
 
