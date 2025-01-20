@@ -12,7 +12,7 @@ let articlesList = ref([
         time2: '2024年05月11日',
         read: 4662,
         like: 4,
-        img: 'https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280',
+        img: 'https://b0.bdstatic.com/fd8b1444613835e22392afbf801c24b0e5.jpg@h_1280',
         articles: '君不见，黄河之水天上来，奔流到海不复回。君不见，高堂明镜悲白发，朝如青丝暮成雪。',
         labels: '图册',
         isTop: true,
@@ -136,7 +136,7 @@ onMounted(() => {
             <li class="content-list-item default" v-for="(item, index) in articlesList" :key="index">
                 <div class="line"></div>
                 <a href="" class="thumbnail">
-                    <img :src="item.img" alt="">
+                    <img v-img-loader="item.img" alt="image" />
                     <time>{{ item.time }}</time>
                 </a>
                 <div class="information">

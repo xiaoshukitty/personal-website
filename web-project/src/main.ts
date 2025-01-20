@@ -7,6 +7,7 @@ import "ant-design-vue/dist/reset.css";
 import router from "./router/index";
 //引入全局样式
 import "@/styles/index.scss";
+import imgLoader from "./directives/v-img-loader";
 
 import SvgIcon from "@/components/SvgIcon/src/index.vue";
 import ProgressBar from "@/components/ProgressBar/index.vue";
@@ -17,6 +18,8 @@ const app = createApp(App);
 
 app.component("SvgIcon", SvgIcon); // 全局注册 SvgIcon 组件
 app.component("ProgressBar", ProgressBar); // 全局注册进度条组件
+
+app.directive("img-loader", imgLoader); // 注册全局指令 v-img-loader
 
 app.use(pinia);
 app.use(Antd);

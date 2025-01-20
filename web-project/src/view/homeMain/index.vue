@@ -44,7 +44,8 @@ const changeTab = (index: number) => {
                 <div class="shu-content-banner-recommend">
                     <figure class="item">
                         <a href="" class="thumbnail">
-                            <img src="https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280" alt="">
+                            <img v-img-loader="'https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280'"
+                                alt="">
                         </a>
                         <figcaption class="information">
                             <span class="type">推荐</span>
@@ -53,7 +54,8 @@ const changeTab = (index: number) => {
                     </figure>
                     <figure class="item">
                         <a href="" class="thumbnail">
-                            <img src="https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280" alt="">
+                            <img v-img-loader="'https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280'"
+                                alt="">
                         </a>
                         <figcaption class="information">
                             <span class="type">推荐</span>
@@ -64,48 +66,13 @@ const changeTab = (index: number) => {
             </div>
             <div class="shu-content-hot">
                 <ul class="shu-content-hot-list">
-                    <li class="item">
+                    <li class="item" v-for="i in 4" :key="i">
                         <a href="" class="link">
                             <figure class="inner">
                                 <span class="views">44,800 ℃</span>
                                 <img class="image"
-                                    src="https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280" alt="">
-                                <figcaption class="title">
-                                    日照香炉生紫烟，遥看瀑布挂前川。
-                                </figcaption>
-                            </figure>
-                        </a>
-                    </li>
-                    <li class="item">
-                        <a href="" class="link">
-                            <figure class="inner">
-                                <span class="views">44,800 ℃</span>
-                                <img class="image"
-                                    src="https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280" alt="">
-                                <figcaption class="title">
-                                    日照香炉生紫烟，遥看瀑布挂前川。
-                                </figcaption>
-                            </figure>
-                        </a>
-                    </li>
-                    <li class="item">
-                        <a href="" class="link">
-                            <figure class="inner">
-                                <span class="views">44,800 ℃</span>
-                                <img class="image"
-                                    src="https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280" alt="">
-                                <figcaption class="title">
-                                    日照香炉生紫烟，遥看瀑布挂前川。
-                                </figcaption>
-                            </figure>
-                        </a>
-                    </li>
-                    <li class="item">
-                        <a href="" class="link">
-                            <figure class="inner">
-                                <span class="views">44,800 ℃</span>
-                                <img class="image"
-                                    src="https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280" alt="">
+                                    v-img-loader="'https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280'"
+                                    alt="">
                                 <figcaption class="title">
                                     日照香炉生紫烟，遥看瀑布挂前川。
                                 </figcaption>
