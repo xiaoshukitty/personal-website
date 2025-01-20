@@ -28,10 +28,20 @@ const tabList = ref([
 let activeIndex = ref(0);
 let tabWidth = ref<HTMLElement | null>(null);
 let activeTabLeft = ref(0);
-let activeTabWidth = ref(56.0059)
+let activeTabWidth = ref(56.0059);
+const sonArticlesList = ref(null)
+
+
 const changeTab = (index: number) => {
     activeIndex.value = index;
     activeTabLeft.value = ((tabWidth.value[index].offsetWidth) + 20) * index;
+}
+
+//加载更多
+const readMore = () => {
+    if (sonArticlesList.value) {
+        sonArticlesList.value.readMore();
+    }
 }
 
 </script>
@@ -91,10 +101,10 @@ const changeTab = (index: number) => {
                     <li class="line" :style="{ 'left': activeTabLeft + 'px', 'width': activeTabWidth + 'px' }"></li>
                 </ul>
             </div>
-            <ArticlesList :activeIndex="activeIndex"></ArticlesList>
+            <ArticlesList ref="sonArticlesList" :activeIndex="activeIndex"></ArticlesList>
         </div>
         <div>
-            <div class="shu-pagination">查看更多</div>
+            <div class="shu-pagination" @click="readMore">查看更多</div>
         </div>
     </div>
 </template>

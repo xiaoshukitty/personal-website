@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch, defineExpose } from 'vue';
 
 let item = ref(10);
 let loadingList = ref(false);
@@ -105,13 +105,44 @@ let articlesList = ref([
         labels: '图册',
         isTop: false,
     }
-])
+]);
+let isFlag = ref(false);
+
+
 
 const props = defineProps({
     activeIndex: {
         type: Number,
         default: 0
-    }
+    },
+})
+
+// 加载更多的方法
+const readMore = () => {
+    isFlag.value = true;
+    setTimeout(() => {
+        articlesList.value.push(
+            {
+                id: 1,
+                title: '将进酒·君不见',
+                time: '2024-05-11',
+                time2: '2024年05月11日',
+                read: 4662,
+                like: 4,
+                img: 'https://b0.bdstatic.com/fd8b1444613835e22392afbf801c24b0e5.jpg@h_1280',
+                articles: '君不见，黄河之水天上来，奔流到海不复回。君不见，高堂明镜悲白发，朝如青丝暮成雪。',
+                labels: '图册',
+                isTop: true,
+            }
+        )
+        isFlag.value = false;
+    }, 1000)
+}
+
+
+//让父组件调用
+defineExpose({
+    readMore
 })
 
 watch(() => props.activeIndex, (val) => {
@@ -163,7 +194,7 @@ onMounted(() => {
             </li>
         </ul>
         <!-- loading -->
-        <ul class="content-list-loading" v-else>
+        <ul class="content-list-loading" v-if="!loadingList || isFlag">
             <li class="item">
                 <div class="thumbnail"></div>
                 <div class="information">
