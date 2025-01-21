@@ -180,6 +180,18 @@
     line-height: 32px !important;
     text-align: left !important;
   }
+
+  /* 文章组件 */
+  html .about-detail-related-content {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+  html .about-detail-related .about-detail-related-content .item img {
+    height: 80px !important;
+  }
+  html .about-detail-related .about-detail-related-content .item h6 {
+    font-size: 12px !important;
+  }
 }
 
 @media (max-width: 992px) {
@@ -209,9 +221,14 @@
   }
 
   /* 首页 -  homeMain -  ArticlesList*/
-  html .content-list-loading  .thumbnail {
+  html .content-list-loading .thumbnail {
     width: 180px !important;
     height: 125px !important;
+  }
+
+  /* 文章组件 */
+  html .about-detail-related-content .item img {
+    height: 90px !important;
   }
 }
 
@@ -249,5 +266,10 @@
   html .content-list-item .thumbnail {
     width: 185px !important;
     height: 125px !important;
+  }
+
+  /* 文章组件 */
+  html .about-detail-related-content img {
+    height: 100px !important;
   }
 }
