@@ -113,6 +113,17 @@ body {
     "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
 }
 
+/* 滚动条设置 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: var(--seat);
+}
+
 body::before {
   content: "";
   position: fixed;
@@ -127,6 +138,8 @@ body::before {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+/* 主题切换 */
 
 html[data-theme="dark"] body::before {
   background: #121212;
