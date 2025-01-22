@@ -1,10 +1,9 @@
 <template>
     <div class="waterfall-container" ref="containerRef">
-        <!-- 左侧列 -->
         <div class="column" v-for="(column, index) in columns" :key="index">
-            <div v-for="item in column" :key="item.id" class="waterfall-item">
-                <img :src="item.src" :alt="'Image ' + item.id" :style="{ height: item.height + 'px' }"
-                    @load="onImageLoad(item, $event)" />
+            <div v-for="(item, index) in column" :key="item.id" class="waterfall-item">
+                <img v-img-loader="item.src" :alt="'Image ' + item.id" :style="{ height: item.height + 'px' }"
+                    @load="onImageLoad(item, $event)" @click="previewImage(index)" />
             </div>
         </div>
     </div>
@@ -12,7 +11,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, watch, onMounted } from "vue";
-
+import { useImagePreview } from '../../hooks/imagePreviewProvider';
 export default defineComponent({
     name: "Waterfall",
     props: {
@@ -23,7 +22,7 @@ export default defineComponent({
     },
     setup(props) {
         const containerRef = ref<HTMLDivElement | null>(null);
-
+        const { openPreview } = useImagePreview();
         // 两列的数据
         const columns = reactive<Array<Array<{ id: number; src: string; height: number }>>>([
             [],
@@ -59,6 +58,14 @@ export default defineComponent({
             distributeImages(); // 重新分配
         };
 
+        //使用全局图片预览组件
+        const previewImage = (i: number) => {
+            console.log('i', i);
+
+            openPreview(props.images, 0); // 触发全局图片预览
+        };
+
+
         watch(
             () => props.images,
             () => {
@@ -75,6 +82,7 @@ export default defineComponent({
             columns,
             onImageLoad,
             containerRef,
+            previewImage
         };
     },
 });

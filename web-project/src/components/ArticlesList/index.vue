@@ -1,8 +1,10 @@
 <script setup lang="ts">
 
 import { onMounted, ref, watch, defineExpose } from 'vue';
-
+import { useRouter } from 'vue-router'
 let item = ref(10);
+
+let $router = useRouter();
 let loadingList = ref(false);
 let articlesList = ref([
     {
@@ -139,6 +141,17 @@ const readMore = () => {
     }, 1000)
 }
 
+//跳转
+const goToArchives = (id: number) => {
+    console.log(id);
+    $router.push({
+        path: '/about',
+        query: {
+            id,
+            type: 'pictures',
+        }
+    })
+}
 
 //让父组件调用
 defineExpose({
@@ -165,18 +178,19 @@ onMounted(() => {
 <template>
     <div class="shu-content-list">
         <ul class="content-list" v-if="loadingList">
-            <li class="content-list-item default" v-for="(item, index) in articlesList" :key="index">
+            <li class="content-list-item default" v-for="(item, index) in articlesList" :key="index"
+                @click.prevent="goToArchives(item.id)">
                 <div class="line"></div>
-                <a href="" class="thumbnail">
+                <a href="#" class="thumbnail">
                     <img v-img-loader="item.img" alt="image" />
                     <time>{{ item.time }}</time>
                 </a>
                 <div class="information">
-                    <a href="" class="title">
+                    <a href="#" class="title">
                         <span class="badge " v-if="item.isTop"> 置顶 </span>
                         {{ item.title }}
                     </a>
-                    <a href="" class="abstract">
+                    <a href="#" class="abstract">
                         {{ item.articles }}
                     </a>
                     <div class="meta">
@@ -187,7 +201,7 @@ onMounted(() => {
                         </ul>
                         <div class="meta-last">
                             <SvgIcon class="icon" name="picture" :width="'15px'" :height="'15px'" />
-                            <a href="" class="link">{{ item.labels }}</a>
+                            <a href="#" class="link">{{ item.labels }}</a>
                         </div>
                     </div>
                 </div>
