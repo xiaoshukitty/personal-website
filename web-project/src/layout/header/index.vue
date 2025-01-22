@@ -131,7 +131,7 @@ watch(() => menuShow.value, (newVal) => {
                 <SvgIcon class="header-above-logo-icon-listview" name="listview" :width="'20px'" :height="'20px'"
                     @click="searchOutput" />
                 <a href="" class="header-above-logo">
-                    <img v-img-loader="'https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280'" alt="">
+                    <img src="https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280" alt="">
                 </a>
                 <div class="header-above-nav">
                     <div v-for="(item, index) in tabs" :key="index"
