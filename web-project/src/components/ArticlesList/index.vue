@@ -25,7 +25,7 @@ let articlesList = ref([
         time2: '2024年05月11日',
         read: 4662,
         like: 4,
-        img: 'https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280',
+        img: 'https://img1.baidu.com/it/u=981765317,573942126&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800',
         articles: '君不见，黄河之水天上来，奔流到海不复回。君不见，高堂明镜悲白发，朝如青丝暮成雪。',
         labels: '图册',
         isTop: false,
@@ -36,7 +36,7 @@ let articlesList = ref([
         time2: '2024年05月11日',
         read: 4662,
         like: 4,
-        img: 'https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280',
+        img: 'https://img1.baidu.com/it/u=981765317,573942126&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800',
         articles: '君不见，黄河之水天上来，奔流到海不复回。君不见，高堂明镜悲白发，朝如青丝暮成雪。',
         labels: '图册',
         isTop: false,
@@ -47,7 +47,7 @@ let articlesList = ref([
         time2: '2024年05月11日',
         read: 4662,
         like: 4,
-        img: 'https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280',
+        img: 'https://img1.baidu.com/it/u=981765317,573942126&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800',
         articles: '君不见，黄河之水天上来，奔流到海不复回。君不见，高堂明镜悲白发，朝如青丝暮成雪。',
         labels: '图册',
         isTop: false,
@@ -58,7 +58,7 @@ let articlesList = ref([
         time2: '2024年05月11日',
         read: 4662,
         like: 4,
-        img: 'https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280',
+        img: 'https://img1.baidu.com/it/u=981765317,573942126&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800',
         articles: '君不见，黄河之水天上来，奔流到海不复回。君不见，高堂明镜悲白发，朝如青丝暮成雪。',
         labels: '图册',
         isTop: false,
@@ -69,7 +69,7 @@ let articlesList = ref([
         time2: '2024年05月11日',
         read: 4662,
         like: 4,
-        img: 'https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280',
+        img: 'https://img1.baidu.com/it/u=981765317,573942126&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800',
         articles: '君不见，黄河之水天上来，奔流到海不复回。君不见，高堂明镜悲白发，朝如青丝暮成雪。',
         labels: '图册',
         isTop: false,
@@ -80,7 +80,7 @@ let articlesList = ref([
         time2: '2024年05月11日',
         read: 4662,
         like: 4,
-        img: 'https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280',
+        img: 'https://img1.baidu.com/it/u=981765317,573942126&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800',
         articles: '君不见，黄河之水天上来，奔流到海不复回。君不见，高堂明镜悲白发，朝如青丝暮成雪。',
         labels: '图册',
         isTop: false,
@@ -91,7 +91,7 @@ let articlesList = ref([
         time2: '2024年05月11日',
         read: 4662,
         like: 4,
-        img: 'https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280',
+        img: 'https://img1.baidu.com/it/u=981765317,573942126&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800',
         articles: '君不见，黄河之水天上来，奔流到海不复回。君不见，高堂明镜悲白发，朝如青丝暮成雪。',
         labels: '图册',
         isTop: false,
@@ -102,7 +102,7 @@ let articlesList = ref([
         time2: '2024年05月11日',
         read: 4662,
         like: 4,
-        img: 'https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280',
+        img: 'https://img1.baidu.com/it/u=981765317,573942126&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800',
         articles: '君不见，黄河之水天上来，奔流到海不复回。君不见，高堂明镜悲白发，朝如青丝暮成雪。',
         labels: '图册',
         isTop: false,
@@ -131,7 +131,7 @@ const readMore = () => {
                 time2: '2024年05月11日',
                 read: 4662,
                 like: 4,
-                img: 'https://b0.bdstatic.com/fd8b1444613835e22392afbf801c24b0e5.jpg@h_1280',
+                img: 'https://img1.baidu.com/it/u=981765317,573942126&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800',
                 articles: '君不见，黄河之水天上来，奔流到海不复回。君不见，高堂明镜悲白发，朝如青丝暮成雪。',
                 labels: '图册',
                 isTop: true,
@@ -184,6 +184,9 @@ onMounted(() => {
                 <a href="#" class="thumbnail">
                     <img v-img-loader="item.img" alt="image" />
                     <time>{{ item.time }}</time>
+                    <svg class="thumbnail-icon">
+                        <use xlink:href="#icon-pictureIcon"></use>
+                    </svg>
                 </a>
                 <div class="information">
                     <a href="#" class="title">
@@ -284,6 +287,16 @@ onMounted(() => {
                     border-radius: 10px;
                     transition: transform 0.35s;
                     transform: translate3d(120%, 0, 0);
+                }
+
+                .thumbnail-icon {
+                    position: absolute;
+                    z-index: 1;
+                    top: 5px;
+                    left: 5px;
+                    width: 20px;
+                    height: 20px;
+                    fill: #fff;
                 }
             }
 

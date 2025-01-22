@@ -41,7 +41,6 @@ onMounted(() => {
     <div class="shu-action">
         <div :class="['shu-action-item scroll', { 'scroll-active': props.scrollPosition > 280 }]"
             @click="scrollOneScreen('wrapper')">
-            <!-- <SvgIcon name="rocket" :width="'30px'" :height="'30px'" /> -->
             <svg class="scroll-active-icon">
                 <use xlink:href="#icon-rocket"></use>
             </svg>
