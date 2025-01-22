@@ -2,7 +2,8 @@
     <Teleport to="body">
         <div v-if="visible" class="image-preview-overlay" @click="closePreview">
             <div class="image-preview-modal" @click.stop>
-                <img v-img-loader="currentImage.src" alt="Preview" class="image-preview-image" />
+                <img v-img-loader="currentImage.src" :src="currentImage.src" alt="Preview"
+                    class="image-preview-image" />
 
                 <!-- 图片切换按钮 -->
                 <button class="prev-btn" @click="prevImage">←</button>
@@ -61,6 +62,7 @@ export default defineComponent({
 }
 
 .image-preview-image {
+    width: 100%;
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
