@@ -362,13 +362,11 @@ onMounted(() => {
                         .meta-ul-li {
                             &::after {
                                 content: '/';
+                                color: var(--seat);
+                                padding: 0 5px;
                             }
                         }
 
-                        li {
-                            color: var(--seat);
-                            padding: 0 5px;
-                        }
                     }
 
                     .meta-last {
