@@ -3,16 +3,16 @@
         @mouseleave="startAutoPlay">
         <div class="carousel-wrapper" :style="wrapperStyle">
             <div class="carousel-item" v-for="(item, index) in images" :key="index" :style="getItemStyle(index)">
-                <img :src="item" :alt="'Image ' + index" class="carousel-image" />
+                <img v-img-loader=item :src="item" :alt="'Image ' + index" class="carousel-image" />
             </div>
         </div>
-        <button class="carousel-button left" @click="prevImage">←</button>
-        <button class="carousel-button right" @click="nextImage">→</button>
+        <!-- <button class="carousel-button left" @click="prevImage">←</button>
+        <button class="carousel-button right" @click="nextImage">→</button> -->
     </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 
 const props = defineProps<{
     images: string[] // 图片数组
@@ -23,10 +23,21 @@ const props = defineProps<{
 
 const currentIndex = ref(0) // 当前显示的图片索引
 const intervalId = ref<number | null>(null) // 存储定时器ID
-const width = props.width || 600 // 默认宽度
-const height = props.height || 400 // 默认高度
+let width = props.width || 600 // 默认宽度
+let height = props.height || 400 // 默认高度
 const interval = props.interval || 3000 // 默认3秒自动播放一次
 const isTransitioning = ref(true) // 控制是否启用过渡动画
+
+
+watch(() => props.width, (newWidth, oldWidth) => {
+    width = newWidth;
+})
+
+watch(() => props.height, (newHeight, oldHeight) => {
+    height = newHeight;
+})
+
+
 
 // 包含所有图片的长度
 const imageCount = computed(() => props.images.length)

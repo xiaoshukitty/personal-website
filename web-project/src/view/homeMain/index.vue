@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, } from 'vue';
 import ArticlesList from '../../components/ArticlesList/index.vue';
-
+import Carousel from '../../components/Carousel/index.vue'
 
 const tabList = ref([
     {
@@ -25,8 +25,20 @@ const tabList = ref([
         key: 'back'
     },
 ])
+
+const imageList = ref([
+    'https://pic3.zhimg.com/v2-438ae100f06ccf947031b406d84a4f0a_r.jpg',
+    'https://img-baofun.zhhainiao.com/pcwallpaper_ugc/static/7a67dece8aff3b212fa180d8c1f7eac5.jpg?x-oss-process=image%2fresize%2cm_lfit%2cw_1920%2ch_1080',
+    'https://img-baofun.zhhainiao.com/pcwallpaper_ugc/static/ea1338f685ec2c7b4348ba5e17f08dd0.jpg?x-oss-process=image%2fresize%2cm_lfit%2cw_1920%2ch_1080',
+    'https://img-baofun.zhhainiao.com/pcwallpaper_ugc/static/86f3f30c32342a017f699fab73c0481f.jpg?x-oss-process=image%2fresize%2cm_lfit%2cw_1920%2ch_1080',
+    'https://img-baofun.zhhainiao.com/pcwallpaper_ugc/static/fb1da048d1b5ebdbcdac2db6a9e69ad8.jpg?x-oss-process=image%2fresize%2cm_lfit%2cw_1920%2ch_1080',
+    'https://img-baofun.zhhainiao.com/pcwallpaper_ugc/static/ea73c0013ecd439cccc3aced51ef60d7.jpg?x-oss-process=image%2fresize%2cm_lfit%2cw_1920%2ch_1080',
+
+])
 let activeIndex = ref(0);
 let tabWidth = ref<HTMLElement | null>(null);
+// 获取 div 元素的引用
+const swiperContainer = ref<HTMLDivElement | null>(null);
 let activeTabLeft = ref(0);
 let activeTabWidth = ref(56.0059);
 const sonArticlesList = ref(null)
@@ -37,6 +49,21 @@ const changeTab = (index: number) => {
     activeTabLeft.value = ((tabWidth.value[index].offsetWidth) + 20) * index;
 }
 
+const swiperWidth = ref(0);
+const swiperHeight = ref(0);
+
+
+// 创建 ResizeObserver 实例来监听尺寸变化
+const resizeObserver = new ResizeObserver(() => {
+    if (swiperContainer.value) {
+        swiperHeight.value = swiperContainer.value.clientHeight;
+        swiperWidth.value = swiperContainer.value.clientWidth;
+        console.log('swiperHeight--',swiperHeight.value);
+        console.log('swiperWidth--',swiperWidth.value);
+    }
+});
+
+
 //加载更多
 const readMore = () => {
     if (sonArticlesList.value) {
@@ -44,13 +71,29 @@ const readMore = () => {
     }
 }
 
+// 在组件挂载后，开始监听
+onMounted(() => {
+    if (swiperContainer.value) {
+        resizeObserver.observe(swiperContainer.value);
+    }
+})
+
+// 在组件卸载前停止监听
+onBeforeUnmount(() => {
+    if (swiperContainer.value) {
+        resizeObserver.unobserve(swiperContainer.value);
+    }
+});
+
 </script>
 
 <template>
     <div class="shu-mian">
         <div class="shu-content">
             <div class="shu-content-banner">
-                <div class="swiper-container"></div>
+                <div class="swiper-container" ref="swiperContainer">
+                    <Carousel :images="imageList" :width="swiperWidth" :height="swiperHeight" :interval="3000" />
+                </div>
                 <div class="shu-content-banner-recommend">
                     <figure class="item">
                         <a href="" class="thumbnail">
@@ -135,7 +178,7 @@ const readMore = () => {
                 list-style: none;
                 padding: 0;
                 z-index: 1;
-                background: pink;
+                // background: pink;
             }
 
             .shu-content-banner-recommend {
