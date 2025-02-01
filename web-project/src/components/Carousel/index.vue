@@ -13,6 +13,7 @@
 
 <script lang="ts" setup>
 import { ref, computed, onMounted, onUnmounted, watch } from "vue";
+import { throttle } from '../../utils/methods'
 
 const props = defineProps<{
     images: string[]; // 图片数组
@@ -102,32 +103,21 @@ const updateWindowSize = () => {
     startAutoPlay();
 };
 
-// 防抖函数：延迟一定时间执行回调
-const debounce = (func: Function, wait: number) => {
-    let timeout: number | null = null;
-    return function (this: any) {
-        if (timeout !== null) clearTimeout(timeout); // 清除之前的定时器
-        timeout = setTimeout(() => {
-            func.apply(this, arguments);
-        }, wait);
-    };
-};
-
 
 // 将 updateWindowSize 函数包装为防抖版本，500ms 防抖
-const debouncedUpdateWindowSize = debounce(updateWindowSize, 200);
+const throttledWindowResize = throttle(updateWindowSize, 200);
 
 
 // 在组件挂载时启动自动播放
 onMounted(() => {
     startAutoPlay();
-    window.addEventListener('resize', debouncedUpdateWindowSize);
+    window.addEventListener('resize', throttledWindowResize);
 });
 
 // 在组件卸载时清除定时器
 onUnmounted(() => {
     stopAutoPlay();
-    window.removeEventListener('resize', debouncedUpdateWindowSize);
+    window.removeEventListener('resize', throttledWindowResize);
 });
 </script>
 
