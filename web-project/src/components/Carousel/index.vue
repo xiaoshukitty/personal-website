@@ -3,7 +3,7 @@
         @mouseleave="startAutoPlay">
         <div class="carousel-wrapper" :style="wrapperStyle">
             <div class="carousel-item" v-for="(item, index) in images" :key="index" :style="getItemStyle(index)">
-                <img v-img-loader=item :src="item" :alt="'Image ' + index" class="carousel-image" />
+                <img v-img-loader="item" :src="item" :alt="'Image ' + index" class="carousel-image" />
             </div>
         </div>
         <!-- <button class="carousel-button left" @click="prevImage">←</button>
@@ -12,96 +12,123 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from "vue";
 
 const props = defineProps<{
-    images: string[] // 图片数组
-    width?: number // 轮播图的宽度
-    height?: number // 轮播图的高度
-    interval?: number // 自动播放的间隔时间，默认3000ms
-}>()
+    images: string[]; // 图片数组
+    width?: number; // 轮播图的宽度
+    height?: number; // 轮播图的高度
+    interval?: number; // 自动播放的间隔时间，默认3000ms
+}>();
 
-const currentIndex = ref(0) // 当前显示的图片索引
-const intervalId = ref<number | null>(null) // 存储定时器ID
-let width = props.width || 600 // 默认宽度
-let height = props.height || 400 // 默认高度
-const interval = props.interval || 3000 // 默认3秒自动播放一次
-const isTransitioning = ref(true) // 控制是否启用过渡动画
+const currentIndex = ref(0); // 当前显示的图片索引
+const intervalId = ref<number | null>(null); // 存储定时器ID
+let width = props.width || 600; // 默认宽度
+let height = props.height || 400; // 默认高度
+const interval = props.interval || 3000; // 默认3秒自动播放一次
+const isTransitioning = ref(true); // 控制是否启用过渡动画
 
+watch(
+    () => props.width,
+    (newWidth, oldWidth) => {
+        width = newWidth;
+    }
+);
 
-watch(() => props.width, (newWidth, oldWidth) => {
-    width = newWidth;
-})
-
-watch(() => props.height, (newHeight, oldHeight) => {
-    height = newHeight;
-})
-
-
+watch(
+    () => props.height,
+    (newHeight, oldHeight) => {
+        height = newHeight;
+    }
+);
 
 // 包含所有图片的长度
-const imageCount = computed(() => props.images.length)
+const imageCount = computed(() => props.images.length);
 
 // 轮播图的样式
 const wrapperStyle = computed(() => {
     return {
-        transform: `translateX(-${(currentIndex.value % imageCount.value) * width}px)`,
-        transition: isTransitioning.value ? 'transform 0.5s ease' : 'none' // 根据是否正在过渡来决定是否启用过渡
-    }
-})
+        transform: `translateX(-${(currentIndex.value % imageCount.value) * width
+            }px)`,
+        transition: isTransitioning.value ? "transform 0.5s ease" : "none", // 根据是否正在过渡来决定是否启用过渡
+    };
+});
 
 // 获取每一张图片的样式
 const getItemStyle = (index: number) => {
     return {
         width: `${width}px`,
-        height: `${height}px`
-    }
-}
+        height: `${height}px`,
+    };
+};
 
 // 下一张
 const nextImage = () => {
     if (currentIndex.value === imageCount.value - 1) {
         // 禁用过渡，快速跳回第一张
-        isTransitioning.value = false
+        isTransitioning.value = false;
         setTimeout(() => {
-            currentIndex.value = 0 // 跳到第一张
-            isTransitioning.value = true // 恢复过渡
-        }, 500) // 延迟 500ms 等待过渡动画结束
+            currentIndex.value = 0; // 跳到第一张
+            isTransitioning.value = true; // 恢复过渡
+        }, 500); // 延迟 500ms 等待过渡动画结束
     } else {
-        currentIndex.value += 1
+        currentIndex.value += 1;
     }
-}
+};
 
 // 上一张
 const prevImage = () => {
     if (currentIndex.value === 0) {
-        currentIndex.value = imageCount.value - 1
+        currentIndex.value = imageCount.value - 1;
     } else {
-        currentIndex.value -= 1
+        currentIndex.value -= 1;
     }
-}
+};
 
 // 自动播放定时器
 const startAutoPlay = () => {
-    intervalId.value = setInterval(nextImage, interval)
-}
+    intervalId.value = setInterval(nextImage, interval);
+};
 
 // 停止自动播放
 const stopAutoPlay = () => {
     if (intervalId.value) {
-        clearInterval(intervalId.value)
+        clearInterval(intervalId.value);
     }
-}
+};
+
+// 当窗口大小改变时，更新轮播图的宽度和高度
+const updateWindowSize = () => {
+    startAutoPlay();
+};
+
+// 防抖函数：延迟一定时间执行回调
+const debounce = (func: Function, wait: number) => {
+    let timeout: number | null = null;
+    return function (this: any) {
+        if (timeout !== null) clearTimeout(timeout); // 清除之前的定时器
+        timeout = setTimeout(() => {
+            func.apply(this, arguments);
+        }, wait);
+    };
+};
+
+
+// 将 updateWindowSize 函数包装为防抖版本，500ms 防抖
+const debouncedUpdateWindowSize = debounce(updateWindowSize, 200);
+
 
 // 在组件挂载时启动自动播放
 onMounted(() => {
-    startAutoPlay()
-})
+    startAutoPlay();
+    window.addEventListener('resize', debouncedUpdateWindowSize);
+});
 
 // 在组件卸载时清除定时器
 onUnmounted(() => {
-    stopAutoPlay()
-})
+    stopAutoPlay();
+    window.removeEventListener('resize', debouncedUpdateWindowSize);
+});
 </script>
 
 <style scoped>

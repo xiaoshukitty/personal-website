@@ -21,6 +21,7 @@ const toggleLike = (comment: Comment) => {
 
 <template>
   <div class="articles-operation">
+    <!-- 文章点赞 -->
     <div class="about-detail-agree">
       <div class="agree">
         <div
@@ -112,7 +113,7 @@ const toggleLike = (comment: Comment) => {
       <div class="about-detail-related-content">
         <a class="item" href="#" v-for="i in 4" :key="i">
           <img
-            src="https://q3.itc.cn/q_70/images03/20241013/d3a77cba5a074744905d0c49aa480487.jpeg"
+            src="https://img-baofun.zhhainiao.com/pcwallpaper_ugc/static/7a67dece8aff3b212fa180d8c1f7eac5.jpg?x-oss-process=image%2fresize%2cm_lfit%2cw_1920%2ch_1080"
             alt=""
           />
           <h6>金鱼kinngyo---迷路的黑猫-76P-03-18</h6>

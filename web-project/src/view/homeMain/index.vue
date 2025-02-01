@@ -58,8 +58,6 @@ const resizeObserver = new ResizeObserver(() => {
     if (swiperContainer.value) {
         swiperHeight.value = swiperContainer.value.clientHeight;
         swiperWidth.value = swiperContainer.value.clientWidth;
-        console.log('swiperHeight--',swiperHeight.value);
-        console.log('swiperWidth--',swiperWidth.value);
     }
 });
 

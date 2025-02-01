@@ -11,12 +11,17 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, watch, onMounted } from "vue";
-import { useImagePreview } from '../../hooks/imagePreviewProvider';
+import { useImagePreview } from "../../hooks/imagePreviewProvider";
 export default defineComponent({
     name: "Waterfall",
     props: {
         images: {
-            type: Array as () => Array<{ id: number; src: string; width: number; height: number }>,
+            type: Array as () => Array<{
+                id: number;
+                src: string;
+                width: number;
+                height: number;
+            }>,
             required: true,
         },
     },
@@ -24,10 +29,9 @@ export default defineComponent({
         const containerRef = ref<HTMLDivElement | null>(null);
         const { openPreview } = useImagePreview();
         // 两列的数据
-        const columns = reactive<Array<Array<{ id: number; src: string; height: number }>>>([
-            [],
-            [],
-        ]);
+        const columns = reactive<
+            Array<Array<{ id: number; src: string; height: number }>>
+        >([[], []]);
 
         // 动态分配图片
         const distributeImages = () => {
@@ -54,17 +58,18 @@ export default defineComponent({
         ) => {
             const img = event.target as HTMLImageElement;
             const aspectRatio = img.naturalWidth / img.naturalHeight;
-            item.height = Math.floor(containerRef.value!.offsetWidth / 2 / aspectRatio);
+            item.height = Math.floor(
+                containerRef.value!.offsetWidth / 2 / aspectRatio
+            );
             distributeImages(); // 重新分配
         };
 
         //使用全局图片预览组件
         const previewImage = (i: number) => {
-            console.log('i', i);
+            console.log("i", i);
 
             openPreview(props.images, 0); // 触发全局图片预览
         };
-
 
         watch(
             () => props.images,
@@ -82,7 +87,7 @@ export default defineComponent({
             columns,
             onImageLoad,
             containerRef,
-            previewImage
+            previewImage,
         };
     },
 });
