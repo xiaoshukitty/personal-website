@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import { useThemeStore } from '../../stores/modules/themeStore';
 
-
-const theme = ref('light')
+const theme = ref('light');
+const themeStore = useThemeStore();
+const { getTheme, toggleTheme } = themeStore;
 
 const props = defineProps({
     scrollPosition: {
@@ -19,20 +21,11 @@ const scrollOneScreen = (id: string) => {
 
 //主题切换
 const themeChange = () => {
-    theme.value = theme.value === 'light' ? 'dark' : 'light'
-    // 将当前主题存储到 localStorage 中，便于页面刷新后记住上次的主题
-    localStorage.setItem('theme', theme.value);
-    document.documentElement.setAttribute('data-theme', theme.value)
+    toggleTheme();
 }
 
 onMounted(() => {
-    const savedTheme = localStorage.getItem('theme')
-    if (savedTheme) {
-        theme.value = savedTheme
-        document.documentElement.setAttribute('data-theme', savedTheme)
-    } else {
-        document.documentElement.setAttribute('data-theme', theme.value)
-    }
+    getTheme();
 })
 
 </script>
