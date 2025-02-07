@@ -192,6 +192,21 @@
   html .about-detail-related .about-detail-related-content .item h6 {
     font-size: 12px !important;
   }
+
+  /* footer 页面 */
+  html .shu-footer .shu-container {
+    flex-direction: column !important;
+    justify-content: center !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
+  html .shu-footer .shu-container > .footer-item {
+    padding: 5px 0 !important;
+  }
+
+  html .shu-footer .shu-container .scaling {
+    margin: 0 !important;
+  }
 }
 
 @media (max-width: 992px) {
