@@ -1,0 +1,1 @@
+const s=()=>{const o=Math.floor(Math.random()*256),r=Math.floor(Math.random()*256),t=Math.floor(Math.random()*256);return`rgb(${o}, ${r}, ${t})`},e=(o,r)=>{let t=0;return(...n)=>{const a=Date.now();a-t>=r&&(o(...n),t=a)}};export{s as g,e as t};
