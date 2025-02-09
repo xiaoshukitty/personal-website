@@ -28,4 +28,7 @@ export default defineConfig({
       },
     },
   },
+  // 静态资源基础路径 base: './' || '',
+  // base: '/h5', // 子目录
+  base: process.env.NODE_ENV === "production" ? "./" : "/",
 });
