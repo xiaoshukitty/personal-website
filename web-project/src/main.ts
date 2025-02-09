@@ -5,6 +5,7 @@ import pinia from "./stores/index";
 import Antd from "ant-design-vue";
 import "ant-design-vue/dist/reset.css";
 import router from "./router/index";
+import './setting'
 //引入全局样式
 import "@/styles/index.scss";
 import imgLoader from "./directives/v-img-loader";
