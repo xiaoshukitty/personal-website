@@ -25,7 +25,7 @@ interface Image {
 
 const route = useRoute() as CustomRoute;
 const isShow = ref(false);
-let images = reactive<Image[]>([
+let images1 = reactive<Image[]>([
   {
     id: 1,
     src: "https://img2.baidu.com/it/u=2616208871,393006875&fm=253&fmt=auto&app=138&f=JPEG?w=608&h=973",
@@ -63,7 +63,7 @@ let images = reactive<Image[]>([
     height: 300,
   },
 ]);
-
+let images = reactive<Image[]>([]);
 const id = ref("1");
 
 const getPicList = () => {
@@ -73,7 +73,17 @@ const getPicList = () => {
     })
     .then((res) => {
       if (res.data && res.data.length > 0) {
-        images = res.data[0].images_url;
+        // images = res.data[0].images_url;
+        let copy = res.data[0].images_url;
+        for (let i = 0; i < copy.length; i++) {
+          images.push({
+            id: i,
+            src: copy[i].imageUrl,
+            width: 300,
+            height: 400,
+          });
+        }
+        console.log("images", images);
       }
     });
 };
@@ -92,11 +102,7 @@ onMounted(() => {
       <h1 class="about-title">关于</h1>
       <div class="about-detail-count">
         <div class="about-detail-count-information">
-          <img
-            class="avatar"
-            src="https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280"
-            alt=""
-          />
+          <img class="avatar" src="https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280" alt="" />
           <div class="meta">
             <div class="author">
               <a href="" class="link">xiaoshu</a>

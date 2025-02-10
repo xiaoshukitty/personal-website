@@ -207,6 +207,19 @@
   html .shu-footer .shu-container .scaling {
     margin: 0 !important;
   }
+
+  /* 图片预览 */
+  html .photo-gallery-phone {
+    width: 110px !important;
+  }
+
+  html .photo-gallery-phone .photo-gallery-list div {
+    max-width: calc(100% - 10px) !important;
+  }
+
+  html .image-preview-modal {
+    width: 100% !important;
+  }
 }
 
 @media (max-width: 992px) {

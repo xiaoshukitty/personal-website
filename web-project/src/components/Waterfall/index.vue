@@ -1,9 +1,9 @@
 <template>
     <div class="waterfall-container" ref="containerRef">
         <div class="column" v-for="(column, index) in columns" :key="index">
-            <div v-for="(item, index) in column" :key="item.id" class="waterfall-item">
+            <div v-for="(item, index1) in column" :key="item.id" class="waterfall-item">
                 <img v-img-loader="item.src" :alt="'Image ' + item.id" :style="{ height: item.height + 'px' }"
-                    @load="onImageLoad(item, $event)" @click="previewImage(index)" />
+                    @load="onImageLoad(item, $event)" @click="previewImage(item.id)" />
             </div>
         </div>
     </div>
@@ -66,9 +66,7 @@ export default defineComponent({
 
         //使用全局图片预览组件
         const previewImage = (i: number) => {
-            console.log("i", i);
-
-            openPreview(props.images, 0); // 触发全局图片预览
+            openPreview(props.images, i); // 触发全局图片预览
         };
 
         watch(
@@ -98,6 +96,7 @@ export default defineComponent({
     display: flex;
     justify-content: space-between;
     gap: 16px;
+    cursor: pointer;
 }
 
 .column {
