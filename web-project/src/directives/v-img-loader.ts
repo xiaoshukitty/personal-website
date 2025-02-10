@@ -1,9 +1,8 @@
 // src/directives/v-img-loader.ts
+import loadingGIF from "../assets/images/loading.gif";
 export default {
   beforeMount(el: HTMLImageElement, binding: any) {
-    const proxyImage =
-      binding.arg ||
-      "https://static.2ge.org/gif/2023/10/86a79700e14cccea92def5ed92960aaf.gif"; // 默认占位图
+    const proxyImage = binding.arg || loadingGIF; // 默认占位图
     const realImage = binding.value;
     // https://static.2ge.org/gif/2023/10/86a79700e14cccea92def5ed92960aaf.gif
     // https://img0.baidu.com/it/u=1077282731,2234353719&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=800
@@ -27,5 +26,3 @@ export default {
     };
   },
 };
-
-
