@@ -50,7 +50,6 @@ const navTab = [
 ]
 
 
-
 const porps = defineProps({
     scrollPosition: {
         type: Number,
@@ -106,6 +105,11 @@ const navTabClick = (index: number) => {
     $router.push({ path: 'categoryArticles', query: { index } })
 }
 
+//搜索文章
+const searchArticles = (index: number) => {
+
+}
+
 watch(() => searchOutShow.value, (newVal) => {
     if (newVal) {
         document.body.style.overflow = 'hidden'
@@ -141,13 +145,15 @@ watch(() => menuShow.value, (newVal) => {
                 <form action="" class="header-above-search">
                     <input type="text" placeholder="请输入关键词" class="header-above-search-input" @focus="onFocus"
                         @blur="onBlur">
-                    <button type="submit" class="header-above-search-btn">Search</button>
+                    <button type="submit" class="header-above-search-btn">
+                        <SvgIcon class="" name="search" :width="'20px'" :height="'20px'" :color="'#fff'" />
+                    </button>
                     <nav class="result active" v-if="navSearch">
-                        <a href="#" class="item" v-for="(i, index) in 5" :key="i">
+                        <div class="item" v-for="(i, index) in 5" :key="i" @click="searchArticles(index)">
                             <span class="sort">{{ index + 1 }}</span>
-                            <span class="text">经典H动态图：雨后小故事、凌辱小故事、自行车小故事、家教小故事</span>
+                            <span class="text">君不见，黄河之水天上来，奔流到海不复回。</span>
                             <span class="views">44,860 阅读</span>
-                        </a>
+                        </div>
                     </nav>
                 </form>
                 <SvgIcon @click="searchOutput('search')" class="header-above-search-icon" name="search" :width="'25px'"
@@ -392,6 +398,9 @@ watch(() => menuShow.value, (newVal) => {
                     color: #fff;
                     border-radius: 0 17px 17px 0;
                     padding: 0 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                 }
 
                 .result {
