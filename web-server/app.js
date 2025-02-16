@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors"); // 引入 CORS 中间件
 
 const uploadRoutes = require("./routes/Image-processing"); // 引入路由模块
+const articlesRoutes = require("./routes/articles-pictures");
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(cors()); // 默认允许所有来源的请求
 
 // 使用路由
 app.use(uploadRoutes);
+app.use(articlesRoutes);
 
 // 启动 Express 服务器
 const port = 3000;
