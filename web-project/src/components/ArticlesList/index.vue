@@ -1,7 +1,8 @@
 <script setup lang="ts">
 
 import { onMounted, ref, watch, defineExpose } from 'vue';
-import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router';
+
 let item = ref(10);
 
 let $router = useRouter();
@@ -250,6 +251,10 @@ onMounted(() => {
 
             &:hover .line {
                 transform: scaleY(1);
+            }
+
+            &:last-child {
+                border-bottom: none;
             }
         }
 
