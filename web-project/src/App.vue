@@ -9,7 +9,7 @@ provideImagePreview();
 
 <template>
   <div>
-    <ProgressBar />
+    <!-- <ProgressBar /> -->
     <!-- 全局配置图片预览组件 -->
     <ImagePreview />
     <router-view />
