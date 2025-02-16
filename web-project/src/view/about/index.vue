@@ -5,7 +5,7 @@ import ArticlesInteraction from "../../components/ArticlesInteraction/index.vue"
 import Waterfall from "../../components/Waterfall/index.vue";
 import { watch, ref, reactive, onMounted } from "vue";
 import { useRoute, RouteLocationNormalizedLoaded } from "vue-router";
-
+import { extractionDate } from '../../utils/timeAll'
 interface CustomRouteQuery {
   id: string; // 查询参数
   type: string;
@@ -21,6 +21,18 @@ interface Image {
   src: string;
   width: number;
   height: number;
+}
+interface ArticlesObjType {
+  id: number;
+  avatar_url: string;
+  comments_count: number;
+  tags: string;
+  images_url: Image[],
+  title: string;
+  type: string;
+  upload_date: string;
+  username: string;
+  views_count: number;
 }
 
 const route = useRoute() as CustomRoute;
@@ -64,29 +76,44 @@ let images1 = reactive<Image[]>([
   },
 ]);
 let images = reactive<Image[]>([]);
+let articlesObj = reactive<ArticlesObjType>({
+  id: 0,
+  avatar_url: '',
+  comments_count: 0,
+  tags: '',
+  images_url: [],
+  title: '',
+  type: '',
+  upload_date: '',
+  username: '',
+  views_count: 0,
+})
 const id = ref("1");
-
-const getPicList = () => {
-  axios
-    .post("http://localhost:3000/image-list", {
+let dayData = ref<string | number>("");
+const getPicList = async () => {
+  try {
+    const res = await axios.post("http://localhost:3000/image-list", {
       id: id.value,
     })
-    .then((res) => {
-      if (res.data && res.data.length > 0) {
-        // images = res.data[0].images_url;
-        let copy = res.data[0].images_url;
-        for (let i = 0; i < copy.length; i++) {
-          images.push({
-            id: i,
-            src: copy[i].imageUrl,
-            width: 300,
-            height: 400,
-          });
-        }
-        console.log("images", images);
+
+    if (res.data && res.data.length > 0) {
+      let copy = res.data[0].images_url;
+      for (let i = 0; i < copy.length; i++) {
+        images.push({
+          id: i,
+          src: copy[i].imageUrl,
+          width: 300,
+          height: 400,
+        });
       }
-    });
-};
+      articlesObj = res.data[0];
+    }
+    dayData.value = extractionDate(articlesObj.upload_date, 'mm/dd');
+
+  } catch (error) {
+    console.error("Error fetching image list:", error);
+  }
+}
 
 onMounted(() => {
   getPicList();
@@ -105,18 +132,18 @@ onMounted(() => {
           <img class="avatar" src="https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280" alt="" />
           <div class="meta">
             <div class="author">
-              <a href="" class="link">xiaoshu</a>
+              <a href="" class="link">{{ articlesObj.username }}</a>
             </div>
             <div class="meta-item">
-              <span class="text">2000-12-20</span>
+              <span class="text">{{ extractionDate(articlesObj.upload_date, 'yyyy-MM-dd') }}</span>
               <span class="line">/</span>
-              <span class="text">0 评论</span>
+              <span class="text">{{ articlesObj.comments_count }} 评论</span>
               <span class="line">/</span>
-              <span class="text">1220 阅读</span>
+              <span class="text">{{ articlesObj.views_count }} 阅读</span>
             </div>
           </div>
         </div>
-        <time class="about-detail-count-time">12/20</time>
+        <time class="about-detail-count-time">{{ dayData }}</time>
       </div>
       <article class="about-detail-article">
         <div v-if="isShow">

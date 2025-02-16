@@ -41,3 +41,49 @@ const weekDay = (): string => {
   ];
   return weekDays[date.getDay()];
 };
+
+/**
+ *
+ * @param dateString 日期字符串
+ * @param type  类型
+ * @returns    返回提取的日期部分
+ */
+export const extractionDate = (
+  dateString: string,
+  type:
+    | "yyyy"
+    | "month"
+    | "day"
+    | "hour"
+    | "minute"
+    | "second"
+    | "yyyy/mm"
+    | "mm/dd"
+    | "yyyy-MM-dd"
+): string | number => {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const seconds = date.getSeconds();
+
+  const extractionDateObj = {
+    yyyy: () => year,
+    month: () => month,
+    day: () => day,
+    hour: () => hours,
+    minute: () => minutes,
+    second: () => seconds,
+    "yyyy/mm": () => `${year}/${month.toString().padStart(2, "0")}`, // 'yyyy/mm' format
+    "mm/dd": () =>
+      `${month.toString().padStart(2, "0")}/${day.toString().padStart(2, "0")}`, // 'mm/dd' format
+    "yyyy-MM-dd": () =>
+      `${year}-${month.toString().padStart(2, "0")}-${day
+        .toString()
+        .padStart(2, "0")}`,
+  };
+
+  return extractionDateObj[type]();
+};
