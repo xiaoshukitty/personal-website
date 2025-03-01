@@ -22,7 +22,7 @@ const toggleLike = (comment: Comment) => {
   if (comment.hasLiked) {
     message?.info("您已经点赞了");
   } else {
-    message?.info("您已经点赞了");
+    message?.info("您已经取消点赞了");
   }
   //   comment.likes += comment.hasLiked ? 1 : -1;
 };
