@@ -38,8 +38,11 @@ watch(() => $router.path, (newVal, oldVal) => {
     handleIsAside(newVal)
 })
 
+// 不需要 Aside 的页面路由
 const handleIsAside = (e: string) => {
-    if (e == '/blogsData') {
+    // 定义不需要 Aside 的页面路由白名单
+    const whiteListRouter = ['/blogsData'];
+    if (whiteListRouter.includes(e)) {
         isAside.value = true;
     } else {
         isAside.value = false;
