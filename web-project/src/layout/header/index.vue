@@ -420,6 +420,7 @@ watch(() => menuShow.value, (newVal) => {
                     opacity: 0;
                     transition: visibility 0.35s, opacity 0.35s, transform 0.35s;
                     transform: translate3d(0, 15px, 0);
+                    cursor: pointer;
 
                     .item {
                         height: 40px;

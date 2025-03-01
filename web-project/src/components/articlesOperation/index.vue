@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { ref, reactive } from "vue";
+import { getCurrentInstance } from "vue";
+
+const instance = getCurrentInstance(); // 获取当前 Vue 实例
+const message = instance?.proxy?.$message; // 获取全局 message
 
 interface Comment {
   //   likes: number;
@@ -15,6 +19,11 @@ const comment = reactive<Comment>({
 // 点赞功能
 const toggleLike = (comment: Comment) => {
   comment.hasLiked = !comment.hasLiked;
+  if (comment.hasLiked) {
+    message?.info("您已经点赞了");
+  } else {
+    message?.info("您已经点赞了");
+  }
   //   comment.likes += comment.hasLiked ? 1 : -1;
 };
 </script>
@@ -24,24 +33,11 @@ const toggleLike = (comment: Comment) => {
     <!-- 文章点赞 -->
     <div class="about-detail-agree">
       <div class="agree">
-        <div
-          :class="['icon', { active: comment.hasLiked }]"
-          @click="toggleLike(comment)"
-        >
-          <SvgIcon
-            v-if="!comment.hasLiked"
-            :class="['icon-1', { activeIcon: !comment.hasLiked }]"
-            name="love"
-            :width="'28px'"
-            :height="'28px'"
-          />
-          <SvgIcon
-            v-else
-            :class="['icon-2', { activeIcon: comment.hasLiked }]"
-            name="love-1"
-            :width="'28px'"
-            :height="'28px'"
-          />
+        <div :class="['icon', { active: comment.hasLiked }]" @click="toggleLike(comment)">
+          <SvgIcon v-if="!comment.hasLiked" :class="['icon-1', { activeIcon: !comment.hasLiked }]" name="love"
+            :width="'28px'" :height="'28px'" />
+          <SvgIcon v-else :class="['icon-2', { activeIcon: comment.hasLiked }]" name="love-1" :width="'28px'"
+            :height="'28px'" />
           <!-- {{ comment.likes }} -->
         </div>
       </div>
@@ -52,32 +48,16 @@ const toggleLike = (comment: Comment) => {
         <a href="#">kinngyo</a>
       </div>
       <div :class="['about-detail-operate-share', { active: isIcon }]">
-        <SvgIcon
-          class="icon"
-          name="share"
-          :width="'26px'"
-          :height="'26px'"
-          @mouseover="isIcon = true"
-        />
+        <SvgIcon class="icon" name="share" :width="'26px'" :height="'26px'" @mouseover="isIcon = true" />
         <div class="reach" @mouseleave="isIcon = false">
           <a href="#">
             <SvgIcon class="icon" name="qq" :width="'30px'" :height="'30px'" />
           </a>
           <a href="#">
-            <SvgIcon
-              class="icon"
-              name="wechat"
-              :width="'30px'"
-              :height="'30px'"
-            />
+            <SvgIcon class="icon" name="wechat" :width="'30px'" :height="'30px'" />
           </a>
           <a href="#">
-            <SvgIcon
-              class="icon"
-              name="sina"
-              :width="'30px'"
-              :height="'30px'"
-            />
+            <SvgIcon class="icon" name="sina" :width="'30px'" :height="'30px'" />
           </a>
         </div>
       </div>
@@ -91,12 +71,7 @@ const toggleLike = (comment: Comment) => {
           <span class="text">xiaoshu</span>
         </div>
         <div class="item">
-          <SvgIcon
-            class="icon"
-            name="wechat"
-            :width="'18px'"
-            :height="'18px'"
-          />
+          <SvgIcon class="icon" name="wechat" :width="'18px'" :height="'18px'" />
           <span> 本文链接：</span>
           <span class="text">http:www.baidu.com</span>
         </div>
@@ -114,8 +89,7 @@ const toggleLike = (comment: Comment) => {
         <a class="item" href="#" v-for="i in 4" :key="i">
           <img
             src="https://img-baofun.zhhainiao.com/pcwallpaper_ugc/static/7a67dece8aff3b212fa180d8c1f7eac5.jpg?x-oss-process=image%2fresize%2cm_lfit%2cw_1920%2ch_1080"
-            alt=""
-          />
+            alt="" />
           <h6>金鱼kinngyo---迷路的黑猫-76P-03-18</h6>
         </a>
       </div>
@@ -148,6 +122,7 @@ const toggleLike = (comment: Comment) => {
         background: #f56c6c;
         cursor: pointer;
         margin-bottom: 8px;
+
         .icon-1,
         .icon-2 {
           position: absolute;
@@ -155,6 +130,7 @@ const toggleLike = (comment: Comment) => {
           opacity: 0;
           transition: transform 0.85s, opacity 0.85s;
         }
+
         .activeIcon {
           transform: scale(1);
           opacity: 1;
@@ -219,8 +195,7 @@ const toggleLike = (comment: Comment) => {
           transform: translate(-50%, -50%);
           width: 12px;
           height: 12px;
-          background: url(data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTUiIGhlaWdodD0iMTUiPjxwYXRoIGQ9Ik02ODIuNjY3IDM1Ni44NDhIMzI1LjgxOGEzOC43ODggMzguNzg4IDAgMCAxLTM4Ljc4OC0zOC43ODcgMzguNzg4IDM4Ljc4OCAwIDAgMSAzOC43ODgtMzguNzg4aDM1Ni44NDlhMzguNzg4IDM4Ljc4OCAwIDAgMSAzOC43ODggMzguNzg4IDM4Ljc4OCAzOC43ODggMCAwIDEtMzguNzg4IDM4Ljc4N3oiIGZpbGw9IiM1NGI1ZGIiLz48cGF0aCBkPSJNOTA3LjYzNiAxMDI0aC0xNS41MTVMNTEyIDgwNi43ODhsLTM4MC4xMjEgMjA5LjQ1NEg5My4wOWE2Mi4wNiA2Mi4wNiAwIDAgMS0xNS41MTUtMzEuMDNWMTE2LjM2NEExMTYuMzY0IDExNi4zNjQgMCAwIDEgMTkzLjkzOSAwaDYzNi4xMjJhMTE2LjM2NCAxMTYuMzY0IDAgMCAxIDExNi4zNjMgMTE2LjM2NHY4NjguODQ4YTYyLjA2IDYyLjA2IDAgMCAxLTE1LjUxNSAzMS4wM3pNNTEyIDcyMS40NTVoMjMuMjczbDMzMy41NzUgMTg2LjE4MVYxMTYuMzY0YTM4Ljc4OCAzOC43ODggMCAwIDAtMzguNzg3LTM4Ljc4OEgxOTMuOTM5YTM4Ljc4OCAzOC43ODggMCAwIDAtMzguNzg3IDM4Ljc4OHY3OTkuMDNsMzQxLjMzMy0xODYuMTgyeiIgZmlsbD0iIzU0YjVkYiIvPjwvc3ZnPg==)
-            no-repeat;
+          background: url(data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTUiIGhlaWdodD0iMTUiPjxwYXRoIGQ9Ik02ODIuNjY3IDM1Ni44NDhIMzI1LjgxOGEzOC43ODggMzguNzg4IDAgMCAxLTM4Ljc4OC0zOC43ODcgMzguNzg4IDM4Ljc4OCAwIDAgMSAzOC43ODgtMzguNzg4aDM1Ni44NDlhMzguNzg4IDM4Ljc4OCAwIDAgMSAzOC43ODggMzguNzg4IDM4Ljc4OCAzOC43ODggMCAwIDEtMzguNzg4IDM4Ljc4N3oiIGZpbGw9IiM1NGI1ZGIiLz48cGF0aCBkPSJNOTA3LjYzNiAxMDI0aC0xNS41MTVMNTEyIDgwNi43ODhsLTM4MC4xMjEgMjA5LjQ1NEg5My4wOWE2Mi4wNiA2Mi4wNiAwIDAgMS0xNS41MTUtMzEuMDNWMTE2LjM2NEExMTYuMzY0IDExNi4zNjQgMCAwIDEgMTkzLjkzOSAwaDYzNi4xMjJhMTE2LjM2NCAxMTYuMzY0IDAgMCAxIDExNi4zNjMgMTE2LjM2NHY4NjguODQ4YTYyLjA2IDYyLjA2IDAgMCAxLTE1LjUxNSAzMS4wM3pNNTEyIDcyMS40NTVoMjMuMjczbDMzMy41NzUgMTg2LjE4MVYxMTYuMzY0YTM4Ljc4OCAzOC43ODggMCAwIDAtMzguNzg3LTM4Ljc4OEgxOTMuOTM5YTM4Ljc4OCAzOC43ODggMCAwIDAtMzguNzg3IDM4Ljc4OHY3OTkuMDNsMzQxLjMzMy0xODYuMTgyeiIgZmlsbD0iIzU0YjVkYiIvPjwvc3ZnPg==) no-repeat;
           background-size: 100% 100%;
         }
       }
