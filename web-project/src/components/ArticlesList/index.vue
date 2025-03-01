@@ -1,10 +1,8 @@
 <script setup lang="ts">
-
-import { onMounted, ref, watch, defineExpose } from 'vue';
+import { onMounted, ref, watch, defineExpose, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 
 let item = ref(10);
-
 let $router = useRouter();
 let loadingList = ref(false);
 let articlesList = ref([
@@ -112,7 +110,6 @@ let articlesList = ref([
 let isFlag = ref(false);
 
 
-
 const props = defineProps({
     activeIndex: {
         type: Number,
@@ -121,24 +118,41 @@ const props = defineProps({
 })
 
 // 加载更多的方法
-const readMore = () => {
+const readMore = async () => {
     isFlag.value = true;
+    const newData = [{
+        id: 1,
+        title: '将进酒·君不见',
+        time: '2024-05-11',
+        time2: '2024年05月11日',
+        read: 4662,
+        like: 4,
+        img: 'https://img1.baidu.com/it/u=981765317,573942126&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800',
+        articles: '君不见，黄河之水天上来，奔流到海不复回。君不见，高堂明镜悲白发，朝如青丝暮成雪。',
+        labels: '图册',
+        isTop: true,
+    },
+    {
+        id: 2,
+        title: '将进酒·君不见',
+        time: '2024-05-11',
+        time2: '2024年05月11日',
+        read: 4662,
+        like: 4,
+        img: 'https://img1.baidu.com/it/u=981765317,573942126&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800',
+        articles: '君不见，黄河之水天上来，奔流到海不复回。君不见，高堂明镜悲白发，朝如青丝暮成雪。',
+        labels: '图册',
+        isTop: true,
+    }]
+    articlesList.value.push(...newData);
+    isFlag.value = false;
+    await nextTick();
+    // 用来等图片加载完成在滚动、v-img-loader 写了一个 1s 才完成图片加载
     setTimeout(() => {
-        articlesList.value.push(
-            {
-                id: 1,
-                title: '将进酒·君不见',
-                time: '2024-05-11',
-                time2: '2024年05月11日',
-                read: 4662,
-                like: 4,
-                img: 'https://img1.baidu.com/it/u=981765317,573942126&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800',
-                articles: '君不见，黄河之水天上来，奔流到海不复回。君不见，高堂明镜悲白发，朝如青丝暮成雪。',
-                labels: '图册',
-                isTop: true,
-            }
-        )
-        isFlag.value = false;
+        window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: 'smooth'
+        })
     }, 1000)
 }
 
