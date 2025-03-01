@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { getRandomRgbColor } from '@/utils/methods'
+import { getRandomRgbColor } from '@/utils/methods';
+import { GET_SESSION_STORAGE, SET_SESSION_STORAGE } from '../../utils/storage';
 
 let $router = useRouter();
-let activeIndex = ref(0);
+// let activeIndex = ref(0);
+let activeIndex = ref(GET_SESSION_STORAGE('activeIndex') || 0);
 let navSearch = ref(false);
 let searchOutShow = ref(false);
 let menuShow = ref(false);
@@ -90,7 +92,8 @@ const maskShow = () => {
 }
 
 const goToBack = (item: Tab, index: number) => {
-    activeIndex.value = index
+    activeIndex.value = index;
+    SET_SESSION_STORAGE('activeIndex', index);
     $router.push({ path: item.path })
 }
 
@@ -102,6 +105,7 @@ const openMenu = () => {
 //切换 navTab
 const navTabClick = (index: number) => {
     navTabIndex.value = index;
+    SET_SESSION_STORAGE('navTabIndex', index)
     $router.push({ path: 'categoryArticles', query: { index } })
 }
 
