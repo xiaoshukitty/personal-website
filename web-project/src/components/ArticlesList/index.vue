@@ -148,12 +148,12 @@ const readMore = async () => {
     isFlag.value = false;
     await nextTick();
     // 用来等图片加载完成在滚动、v-img-loader 写了一个 1s 才完成图片加载
-    setTimeout(() => {
-        window.scrollTo({
-            top: document.documentElement.scrollHeight,
-            behavior: 'smooth'
-        })
-    }, 1000)
+    // setTimeout(() => {
+    window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: 'smooth'
+    })
+    // }, 1000)
 }
 
 //跳转

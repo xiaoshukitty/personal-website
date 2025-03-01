@@ -258,6 +258,11 @@
   html .about-detail-related-content .item img {
     height: 90px !important;
   }
+
+  /* 归档页面 */
+  html .blogs-census-basic {
+    grid-template-columns: unset !important;
+  }
 }
 
 @media (max-width: 1200px) {

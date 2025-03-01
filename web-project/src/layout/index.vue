@@ -4,10 +4,12 @@ import Footer from './footer/index.vue';
 import Header from './header/index.vue';
 import Main from './main/index.vue';
 import Operation from './operation/index.vue';
-import { ref, onMounted, onUnmounted } from 'vue';
-
+import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { useRoute } from 'vue-router'
 const scrollPosition = ref(0);
 const isShowSideBox = ref(false);
+let $router = useRoute();
+let isAside = ref(false);
 
 // 处理滚动事件的回调
 const handleScroll = () => {
@@ -32,9 +34,22 @@ const scrollOneScreen = (val: string) => {
     }
 }
 
+watch(() => $router.path, (newVal, oldVal) => {
+    handleIsAside(newVal)
+})
+
+const handleIsAside = (e: string) => {
+    if (e == '/blogsData') {
+        isAside.value = true;
+    } else {
+        isAside.value = false;
+    }
+}
+
 // 组件挂载时添加事件监听
 onMounted(async () => {
     window.addEventListener('scroll', handleScroll);
+    handleIsAside($router.path)
 });
 
 // 组件卸载时移除事件监听
@@ -51,7 +66,7 @@ onUnmounted(() => {
             <div class="shu-mian">
                 <Main />
             </div>
-            <Aside />
+            <Aside v-if="!isAside" />
         </div>
         <Footer />
         <Operation :scrollPosition="scrollPosition" @scrollOneScreen="scrollOneScreen" />
