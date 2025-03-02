@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import axios from "axios";
 import { computed, onBeforeUnmount, onMounted, ref, } from 'vue';
 import ArticlesList from '../../components/ArticlesList/index.vue';
 import Carousel from '../../components/Carousel/index.vue'
@@ -69,11 +70,23 @@ const readMore = () => {
     }
 }
 
+//获取轮播图接口
+const getCarouselImages = async () => {
+    try {
+        const res = await axios.get('http://localhost:3000/carousel-images');
+        imageList.value = res.data.images.map((item: any) => `data:${item.mime_type};base64,${item.url}`)
+    } catch (error) {
+        console.log('error', error);
+    }
+}
+
 // 在组件挂载后，开始监听
 onMounted(() => {
     if (swiperContainer.value) {
         resizeObserver.observe(swiperContainer.value);
     }
+    
+    getCarouselImages(); 
 })
 
 // 在组件卸载前停止监听
