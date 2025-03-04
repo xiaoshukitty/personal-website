@@ -49,6 +49,25 @@ const homePage: RouteRecordRaw[] = [
           requiresAuth: true,
         },
       },
+      {
+        path: "articleDetails",
+        component: () => import("@/view/articleDetails/index.vue"),
+        meta: {
+          title: "文章详情",
+          keepAlive: true,
+          requiresAuth: true,
+        },
+      },
+      /** 功能 */
+      {
+        path: "aiFeatures",
+        component: () => import("@/view/aiFeatures/index.vue"),
+        meta: {
+          title: "ai功能",
+          keepAlive: true,
+          requiresAuth: true,
+        },
+      },
     ],
   },
   {

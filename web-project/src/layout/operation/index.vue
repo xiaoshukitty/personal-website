@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useThemeStore } from '../../stores/modules/themeStore';
+import { useRouter } from 'vue-router';
 
 const theme = ref('light');
 const themeStore = useThemeStore();
 const { getTheme, toggleTheme } = themeStore;
+const $router = useRouter();
+
 
 const props = defineProps({
     scrollPosition: {
@@ -24,6 +27,13 @@ const themeChange = () => {
     toggleTheme();
 }
 
+//切换到AI
+const goToAi = () => {
+    $router.push({
+        path: '/aiFeatures'
+    })
+}
+
 onMounted(() => {
     getTheme();
 })
@@ -36,6 +46,11 @@ onMounted(() => {
             @click="scrollOneScreen('wrapper')">
             <svg class="scroll-active-icon">
                 <use xlink:href="#icon-rocket"></use>
+            </svg>
+        </div>
+        <div class="shu-action-item" @click="goToAi">
+            <svg class="scroll-active-icon">
+                <use xlink:href="#icon-ai"></use>
             </svg>
         </div>
         <div class="shu-action-item" @click="themeChange">

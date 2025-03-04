@@ -220,6 +220,14 @@
   html .image-preview-modal {
     width: 100% !important;
   }
+
+
+  /* aiFeatures 页面 */
+  html .ai-list .ai-item {
+    width: 100% !important;
+    height: 120px !important;
+    line-height: 120px !important;
+  }
 }
 
 @media (max-width: 992px) {
@@ -262,6 +270,13 @@
   /* 归档页面 */
   html .blogs-census-basic {
     grid-template-columns: unset !important;
+  }
+
+  /* aiFeatures 页面 */
+  html .ai-item {
+    width: 180px !important;
+    height: 180px !important;
+    line-height: 180px !important;
   }
 }
 
