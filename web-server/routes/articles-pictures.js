@@ -6,10 +6,16 @@ const router = express.Router();
 router.post("/image-list", async (req, res) => {
   const imageListId = req.body.id;
 
-  const query = "SELECT * FROM articles_pictures WHERE id = ?";
-
+  // 根据是否有 id 参数来构建不同的查询语句
+  const query = imageListId 
+    ? "SELECT * FROM articles_pictures WHERE id = ?"
+    : "SELECT * FROM articles_pictures";
+  
   try {
-    const [rows] = await promisePool.query(query, [imageListId]);
+    // 根据是否有 id 参数执行不同的查询
+    const [rows] = imageListId 
+      ? await promisePool.query(query, [imageListId])
+      : await promisePool.query(query);
 
     for (let i = 0; i < rows.length; i++) {
       if (rows[i].images_url && rows[i].images_url != null) {
