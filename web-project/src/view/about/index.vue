@@ -1,339 +1,312 @@
-<script setup lang="ts">
-import axios from "axios";
-import ArticlesOperation from "../../components/articlesOperation/index.vue";
-import ArticlesInteraction from "../../components/ArticlesInteraction/index.vue";
-import Waterfall from "../../components/Waterfall/index.vue";
-import { watch, ref, reactive, onMounted } from "vue";
-import { useRoute, RouteLocationNormalizedLoaded } from "vue-router";
-import { extractionDate } from '../../utils/timeAll'
-interface CustomRouteQuery {
-  id: string; // 查询参数
-  type: string;
-}
-
-// 创建自定义类型
-type CustomRoute = RouteLocationNormalizedLoaded & {
-  query: CustomRouteQuery;
-};
-
-interface Image {
-  id: number;
-  src: string;
-  width: number;
-  height: number;
-}
-interface ArticlesObjType {
-  id: number;
-  avatar_url: string;
-  comments_count: number;
-  tags: string;
-  images_url: Image[],
-  title: string;
-  type: string;
-  upload_date: string;
-  username: string;
-  views_count: number;
-}
-
-const route = useRoute() as CustomRoute;
-const isShow = ref(false);
-let images1 = reactive<Image[]>([
-  {
-    id: 1,
-    src: "https://img2.baidu.com/it/u=2616208871,393006875&fm=253&fmt=auto&app=138&f=JPEG?w=608&h=973",
-    width: 300,
-    height: 400,
-  },
-  {
-    id: 2,
-    src: "https://img2.baidu.com/it/u=1532087881,2389186498&fm=253&fmt=auto?w=500&h=500",
-    width: 300,
-    height: 500,
-  },
-  {
-    id: 3,
-    src: "https://t12.baidu.com/it/u=156193264,203812701&fm=30&app=106&f=JPEG?w=640&h=800&s=B83B6091CE035F4F32B86CD3030010BA",
-    width: 300,
-    height: 350,
-  },
-  {
-    id: 4,
-    src: "https://wx1.sinaimg.cn/mw690/5ee578f6gy1hswehsh17gj20u014047y.jpg",
-    width: 300,
-    height: 600,
-  },
-  {
-    id: 5,
-    src: "https://t10.baidu.com/it/u=1576508285,204896177&fm=30&app=106&f=JPEG?w=640&h=800&s=652A6EFBDE24C0CE8C34A05A0300C0D4",
-    width: 300,
-    height: 450,
-  },
-  {
-    id: 6,
-    src: "https://wx1.sinaimg.cn/orj480/6eb0ac52gy1hejp6d1wptj20u01hcjwi.jpg",
-    width: 300,
-    height: 300,
-  },
-]);
-let images = reactive<Image[]>([]);
-let articlesObj = reactive<ArticlesObjType>({
-  id: 0,
-  avatar_url: '',
-  comments_count: 0,
-  tags: '',
-  images_url: [],
-  title: '',
-  type: '',
-  upload_date: '',
-  username: '',
-  views_count: 0,
-})
-const id = ref("1");
-let dayData = ref<string | number>("");
-const getPicList = async () => {
-  try {
-    const res = await axios.post("http://localhost:3000/image-list", {
-      id: id.value,
-    })
-
-    if (res.data && res.data.length > 0) {
-      let copy = res.data[0].images_url;
-      for (let i = 0; i < copy.length; i++) {
-        images.push({
-          id: i,
-          src: copy[i].imageUrl,
-          width: 300,
-          height: 400,
-        });
-      }
-      articlesObj = res.data[0];
-    }
-    dayData.value = extractionDate(articlesObj.upload_date, 'mm/dd');
-
-  } catch (error) {
-    console.error("Error fetching image list:", error);
-  }
-}
-
-onMounted(() => {
-  getPicList();
-});
-</script>
-
 <template>
-  <div>
-    <div class="about-detail">
-      <div class="about-category">
-        <span>图册</span>
-      </div>
-      <h1 class="about-title">关于</h1>
-      <div class="about-detail-count">
-        <div class="about-detail-count-information">
-          <img class="avatar" src="https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280" alt="" />
-          <div class="meta">
-            <div class="author">
-              <a href="" class="link">{{ articlesObj.username }}</a>
-            </div>
-            <div class="meta-item">
-              <span class="text">{{ extractionDate(articlesObj.upload_date, 'yyyy-MM-dd') }}</span>
-              <span class="line">/</span>
-              <span class="text">{{ articlesObj.comments_count }} 评论</span>
-              <span class="line">/</span>
-              <span class="text">{{ articlesObj.views_count }} 阅读</span>
+  <div class="about-container">
+    <!-- 第一个模块：统计数据卡片 -->
+    <div class="about-card">
+      <div class="title">文章归档</div>
+      <div class="stats-cards">
+        <div class="stat-item">
+          <user-outlined class="icon" />
+          <div class="stat-info">
+            <div class="label">今日访客</div>
+            <div class="value">
+              {{ statistics.visitors }}
+              <span class="increase" v-if="statistics.visitorsIncrease > 0">
+                +{{ statistics.visitorsIncrease }}
+              </span>
             </div>
           </div>
         </div>
-        <time class="about-detail-count-time">{{ dayData }}</time>
-      </div>
-      <article class="about-detail-article">
-        <div v-if="isShow">
-          <h2>简介</h2>
-          <p>名称：xiaoxshu博客</p>
-          <p>文案：云想衣裳花想容，春风拂槛露华浓</p>
-          <p>
-            定位：她华艳的衣裳如飘逸的云朵，她艳丽的容貌如盛开的花朵，春风拂过栏杆，露珠润泽花色更浓
-          </p>
-          <h2>资源来源</h2>
-          <p>主要来自于一些 网络 频道，。</p>
-          <ul>
-            <li v-for="i in 3" :key="i">
-              <a href="">@12202000</a>
-            </li>
-          </ul>
-          <h2>加入频道</h2>
-          <p>五歌网也有自己的 Telegram 频道</p>
-          <ul>
-            <li v-for="i in 1" :key="i">
-              <a href="">@12202000</a>
-            </li>
-          </ul>
+        <div class="divider"></div>
+        <div class="stat-item">
+          <like-outlined class="icon" />
+          <div class="stat-info">
+            <div class="label">获得点赞</div>
+            <div class="value">
+              {{ statistics.likes }}
+              <span class="increase" v-if="statistics.likesIncrease > 0">
+                +{{ statistics.likesIncrease }}
+              </span>
+            </div>
+          </div>
         </div>
-        <section style="margin-bottom: 15px" v-else>
-          <Waterfall :images="images" />
-        </section>
-      </article>
-      <!-- 文章的操作 -->
-      <ArticlesOperation />
+        <div class="divider"></div>
+        <div class="stat-item">
+          <star-outlined class="icon" />
+          <div class="stat-info">
+            <div class="label">收藏数</div>
+            <div class="value">
+              {{ statistics.favorites }}
+              <span class="increase" v-if="statistics.favoritesIncrease > 0">
+                +{{ statistics.favoritesIncrease }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <!-- 用户文章交互 -->
-    <ArticlesInteraction />
+
+    <!-- 第二个模块：最近活动 -->
+    <div class="about-card">
+      <div class="title">最近活动</div>
+      <div class="about-activities">
+        <a-timeline>
+          <a-timeline-item v-for="activity in recentActivities" :key="activity.id" :color="activity.color">
+            <p class="activity-time">{{ activity.time }}</p>
+            <p class="activity-content">{{ activity.content }}</p>
+          </a-timeline-item>
+        </a-timeline>
+      </div>
+    </div>
+
+    <!-- 第三个模块：我的收藏 -->
+    <div class="about-card">
+      <div class="title">我的收藏</div>
+      <div class="about-activities">
+        <a-list :data-source="myFavorites" >
+          <template #renderItem="{ item }">
+            <a-list-item>
+              <a-list-item-meta>
+                <template #title>
+                  <a :href="item.link" class="favorite-title">{{ item.title }}</a>
+                </template>
+                <template #description>
+                  <span class="favorite-info">{{ item.description }}</span>
+                  <span class="favorite-time">{{ item.time }}</span>
+                </template>
+              </a-list-item-meta>
+            </a-list-item>
+          </template>
+        </a-list>
+      </div>
+    </div>
   </div>
 </template>
 
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { UserOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons-vue';
+
+// 统计数据
+const statistics = ref({
+  visitors: 128,
+  visitorsIncrease: 12,
+  likes: 356,
+  likesIncrease: 25,
+  favorites: 89,
+  favoritesIncrease: 8
+});
+
+// 最近活动数据
+const recentActivities = ref([
+  {
+    id: 1,
+    content: '发布了新文章《Vue3 组件开发技巧》',
+    time: '2024-03-04 15:30',
+    color: 'green'
+  },
+  {
+    id: 2,
+    content: '收藏了文章《TypeScript 最佳实践》',
+    time: '2024-03-03 14:20',
+    color: 'blue'
+  },
+  {
+    id: 3,
+    content: '获得了 10 个点赞',
+    time: '2024-03-02 09:15',
+    color: 'red'
+  },
+  // 可以添加更多活动
+]);
+
+// 收藏列表数据
+const myFavorites = ref([
+  {
+    id: 1,
+    title: 'Vue3 组件开发技巧',
+    description: '介绍 Vue3 组件开发中的常用技巧和最佳实践',
+    link: '#',
+    time: '2024-03-04'
+  },
+  {
+    id: 2,
+    title: 'TypeScript 入门指南',
+    description: '从零开始学习 TypeScript 的完整教程',
+    link: '#',
+    time: '2024-03-03'
+  },
+  // 可以添加更多收藏
+]);
+
+// 页面加载时获取数据
+onMounted(() => {
+});
+</script>
+
 <style scoped lang="scss">
-.about-detail {
-  background: var(--background);
-  border-radius: var(--radius-wrap);
-  padding: 15px;
-  box-shadow: var(--box-shadow);
-  margin-bottom: 15px;
+.about-container {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 
-  .about-category {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
+  .about-card {
+    background: var(--background);
+    box-shadow: var(--box-shadow);
+    border-radius: var(--radius-wrap);
 
-    span {
-      background: #0396ff;
-      color: #fff;
-      font-size: 12px;
-      padding: 3px 8px;
-      margin-right: 5px;
-      border-radius: 2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 120px;
-      transition: transform 0.35s, opacity 0.35s;
-    }
-  }
-
-  .about-title {
-    font-size: 24px;
-    color: var(--main);
-    text-shadow: var(--text-shadow);
-    text-align: center;
-    margin-bottom: 15px;
-    word-break: break-word;
-  }
-
-  .about-detail-count {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-bottom: 15px;
-    border-bottom: 1px solid var(--classC);
-
-    .about-detail-count-information {
+    .title {
       display: flex;
       align-items: center;
+      height: 45px;
+      padding: 0 12px;
+      border-bottom: 1px solid var(--classC);
+      color: var(--main);
+      justify-content: space-between;
+      user-select: none;
+      font-weight: 700;
+      font-size: 16px;
+    }
 
-      .meta {
+    .stats-cards {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+
+      .divider {
+        width: 1px;
+        height: 50px;
+        background: var(--classC);
+        margin: 0 20px;
+      }
+
+      .stat-item {
+        flex: 1;
         display: flex;
-        flex-direction: column;
-        height: 35px;
-        justify-content: space-between;
-        font-size: 12px;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        padding: 0 24px;
+        position: relative;
+        cursor: pointer;
+        transition: all 0.3s ease;
 
-        .author {
-          .link {
-            font-weight: 500;
+        &:hover {
+          transform: translateY(-5px);
+
+          .icon {
+            transform: scale(1.1);
             color: var(--theme);
           }
+
+          .stat-info {
+            .value {
+              color: var(--theme);
+            }
+          }
         }
 
-        .meta-item {
-          display: flex;
-          align-items: center;
-          color: var(--minor);
-          line-height: 16px;
+        .icon {
+          font-size: 32px;
+          color: var(--theme);
 
-          .line {
-            color: var(--seat);
-            margin: 0 7px;
-            vertical-align: middle;
+          transition: all 0.3s ease;
+        }
+
+        .stat-info {
+          text-align: left;
+
+          .label {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 4px;
+            transition: color 0.3s ease;
+          }
+
+          .value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--theme);
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            .increase {
+              font-size: 14px;
+              color: #ff4d4f;
+              font-weight: normal;
+              background: rgba(255, 77, 79, 0.1);
+              padding: 2px 6px;
+              border-radius: 10px;
+              display: inline-flex;
+              align-items: center;
+
+              &::before {
+                content: "今日";
+                font-size: 12px;
+                margin-right: 2px;
+              }
+            }
           }
         }
       }
+    }
 
-      img {
-        width: 35px;
-        height: 35px;
-        border-radius: 50%;
-        margin-right: 10px;
-        border: 1px solid var(--classA);
-        padding: 3px;
-        object-fit: cover;
+    .about-activities {
+      padding: 24px;
+
+      .activity-time {
+        font-size: 12px;
+        color: var(--minor);
+        margin-bottom: 4px;
       }
-    }
 
-    time {
-      font-size: 32px;
-      line-height: 42px;
-      color: var(--routine);
-      user-select: none;
-      text-shadow: var(--text-shadow);
-      font-family: consolas;
-    }
+      .activity-content {
+        margin: 0;
+        color: var(--theme);
+      }
 
-    &::after {
-      content: "";
-      position: absolute;
-      bottom: -1.5px;
-      left: 0;
-      width: 80px;
-      height: 3px;
-      border-radius: 1.5px;
-      background: var(--theme);
+      .favorite-title {
+        color: var(--main) !important;
+      }
+
+      .favorite-time {
+        margin-left: 8px;
+        color: var(--minor);
+        font-size: 12px;
+      }
+
+      .favorite-info {
+        color: var(--minor);
+        font-size: 12px;
+      }
     }
   }
 
-  .about-detail-article {
-    padding-top: 15px;
-    font-size: 15px;
-    word-break: break-word;
-    color: var(--routine);
 
-    h2 {
-      padding: 0 15px;
-      color: var(--main);
-      font-size: 18px;
-      line-height: 24px;
-      margin-bottom: 18px;
-      position: relative;
+  :deep(.ant-card-head-title) {
+    font-size: 18px;
+    font-weight: bold;
+  }
 
-      &::after {
-        content: "";
-        position: absolute;
-        top: 10%;
-        bottom: 10%;
-        left: 0;
-        width: 4px;
-        border-radius: 2px;
-        background: var(--theme);
-      }
-    }
+  :deep(.ant-timeline-item-content) {
+    padding-bottom: 20px;
+  }
 
-    p {
-      line-height: 26px;
-      margin-bottom: 18px;
-    }
+  :deep(.ant-list-item) {
+    padding: 12px 0;
+  }
 
-    ul {
-      margin-bottom: 18px !important;
-      padding-left: 36px;
+  :deep(.ant-list-item-meta-title) {
+    margin-bottom: 4px;
 
-      li {
-        list-style: disc;
-        line-height: 26px;
+    a {
+      color: var(--theme);
 
-        a {
-          display: inline-block;
-          line-height: 26px;
-          color: var(--theme);
-          position: relative;
-        }
+      &:hover {
+        text-decoration: underline;
       }
     }
   }
