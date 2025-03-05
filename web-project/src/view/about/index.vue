@@ -145,7 +145,6 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .about-container {
-  padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 24px;
