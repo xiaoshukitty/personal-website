@@ -160,7 +160,7 @@ const readMore = async () => {
 const goToArchives = (id: number) => {
     console.log(id);
     $router.push({
-        path: '/about',
+        path: '/articleDetails',
         query: {
             id,
             type: 'pictures',
@@ -227,7 +227,7 @@ onMounted(() => {
         </ul>
         <!-- loading -->
         <ul class="content-list-loading" v-if="!loadingList || isFlag">
-            <li class="item">
+            <li class="item" v-for="(item, index) in 4" :key="index">
                 <div class="thumbnail"></div>
                 <div class="information">
                     <div class="title"></div>
