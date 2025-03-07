@@ -93,6 +93,10 @@ const tags = [
                 transition: transform 0.75s;
                 background: var(--background);
                 padding: 5px;
+
+                &:hover {
+                    transform: rotate(360deg);
+                }
             }
 
             .link {
