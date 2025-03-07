@@ -102,9 +102,11 @@ const closeQrcode = () => {
       <div class="about-detail-related-title">相关推荐</div>
       <div class="about-detail-related-content">
         <a class="item" href="#" v-for="i in 4" :key="i">
-          <img
-            src="https://img-baofun.zhhainiao.com/pcwallpaper_ugc/static/7a67dece8aff3b212fa180d8c1f7eac5.jpg?x-oss-process=image%2fresize%2cm_lfit%2cw_1920%2ch_1080"
-            alt="" />
+          <div class="img-wrapper">
+            <img
+              src="https://img-baofun.zhhainiao.com/pcwallpaper_ugc/static/7a67dece8aff3b212fa180d8c1f7eac5.jpg?x-oss-process=image%2fresize%2cm_lfit%2cw_1920%2ch_1080"
+              alt="" />
+          </div>
           <h6>金鱼kinngyo---迷路的黑猫-76P-03-18</h6>
         </a>
       </div>
@@ -324,11 +326,25 @@ const closeQrcode = () => {
         overflow: hidden;
         border-radius: var(--radius-inner);
         transition: transform 0.25s, box-shadow 0.25s;
+        display: block;
+        position: relative;
+
+        .img-wrapper {
+          width: 100%;
+          overflow: hidden;
+          position: relative;
+        }
 
         img {
           width: 100%;
-          height: 120px;
+          height: 100%;
           object-fit: cover;
+          transition: transform 0.3s ease-in-out;
+          transform-origin: center center;
+          
+          &:hover {
+            transform: scale(1.1);
+          }
         }
 
         h6 {
