@@ -85,8 +85,8 @@ onMounted(() => {
     if (swiperContainer.value) {
         resizeObserver.observe(swiperContainer.value);
     }
-    
-    getCarouselImages(); 
+
+    getCarouselImages();
 })
 
 // 在组件卸载前停止监听
@@ -134,9 +134,11 @@ onBeforeUnmount(() => {
                         <a href="" class="link">
                             <figure class="inner">
                                 <span class="views">44,800 ℃</span>
-                                <img class="image"
-                                    v-img-loader="'https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280'"
-                                    alt="">
+                                <div class="img-wrapper">
+                                    <img class="image"
+                                        v-img-loader="'https://b0.bdstatic.com/fd8b1444613835e392afbf801c24b0e5.jpg@h_1280'"
+                                        alt="">
+                                </div>
                                 <figcaption class="title">
                                     日照香炉生紫烟，遥看瀑布挂前川。
                                 </figcaption>
@@ -215,6 +217,12 @@ onBeforeUnmount(() => {
                             width: 100%;
                             height: 100%;
                             object-fit: cover;
+                            transition: transform 0.3s ease-in-out;
+                            transform-origin: center center;
+
+                            &:hover {
+                                transform: scale(1.1);
+                            }
                         }
                     }
 
@@ -294,13 +302,25 @@ onBeforeUnmount(() => {
                                 white-space: nowrap;
                             }
 
-                            .image {
+                            .img-wrapper {
                                 width: 100%;
-                                height: 120px;
-                                object-fit: cover;
-                                transition: opacity 0.35s;
-                                border-radius: var(--radius-inner) var(--radius-inner) 0 0;
+                                overflow: hidden;
+                                position: relative;
+
+                                .image {
+                                    width: 100%;
+                                    height: 120px;
+                                    object-fit: cover;
+                                    border-radius: var(--radius-inner) var(--radius-inner) 0 0;
+                                    transition: transform 0.3s ease-in-out;
+                                    transform-origin: center center;
+
+                                    &:hover {
+                                        transform: scale(1.1);
+                                    }
+                                }
                             }
+
 
                             .title {
                                 font-size: 13px;
