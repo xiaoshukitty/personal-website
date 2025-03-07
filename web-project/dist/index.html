@@ -1,24 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- 前端video标签播放第三方外链地址报错403 -->
-    <meta name="referrer" content="no-referrer" />
-    <title>Vite + Vue + TS</title>
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-    <script src="https://cdn.bootcss.com/vConsole/3.3.4/vconsole.min.js"></script>
-    <script>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="./vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- 前端video标签播放第三方外链地址报错403 -->
+  <meta name="referrer" content="no-referrer" />
+  <title>Vite + Vue + TS</title>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script src="https://cdn.bootcss.com/vConsole/3.3.4/vconsole.min.js"></script>
+  <script>
+
+    // 判断是否是移动端
+    function isMobile() {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+    if (isMobile()) {
       // 初始化
       var vConsole = new VConsole();
-      console.log("Hello world");
-    </script>
-    <script type="module" crossorigin src="./assets/index-B-SoG97e.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-BbsfMiTi.css">
-  </head>
-  <body>
-    <div id="app"></div>
-  </body>
+    }
+  </script>
+  <script type="module" crossorigin src="./assets/index-Bur-eBG1.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-x1uJz1JW.css">
+</head>
+
+<body>
+  <div id="app"></div>
+</body>
+
 </html>
