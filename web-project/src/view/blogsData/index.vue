@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import * as echarts from "echarts/core";
 import { PieChart, LineChart } from "echarts/charts"; // ✅ 按需引入饼图
 import {
@@ -19,9 +19,17 @@ const chartRef = ref(null);
 const lately = ref(null);
 
 let chartInstance = null;
+let latelyInstance = null;
+
+// 处理窗口大小变化
+const handleResize = () => {
+    chartInstance?.resize();
+    latelyInstance?.resize();
+};
+
 onMounted(() => {
     if (chartRef.value) {
-        const chartInstance = echarts.init(chartRef.value);
+        chartInstance = echarts.init(chartRef.value);
         chartInstance.setOption({
             tooltip: {
                 trigger: "item"
@@ -54,8 +62,8 @@ onMounted(() => {
         });
     }
     if (lately.value) {
-        chartInstance = echarts.init(lately.value);
-        chartInstance.setOption({
+        latelyInstance = echarts.init(lately.value);
+        latelyInstance.setOption({
             title: {
                 text: '单位 数量'
             },
@@ -91,6 +99,16 @@ onMounted(() => {
             ]
         });
     }
+
+    // 添加窗口大小变化监听器
+    window.addEventListener('resize', handleResize);
+});
+
+// 组件卸载前清理
+onBeforeUnmount(() => {
+    window.removeEventListener('resize', handleResize);
+    chartInstance?.dispose();
+    latelyInstance?.dispose();
 });
 </script>
 
