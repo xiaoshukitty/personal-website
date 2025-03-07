@@ -11,6 +11,10 @@ interface Comment {
 }
 
 let isIcon = ref(false);
+// 添加二维码控制状态
+const qrcodeVisible = ref(false);
+const qrcodeType = ref<'qq' | 'wechat' | 'sina'>('qq');
+
 const comment = reactive<Comment>({
   //   likes: 0,
   hasLiked: false,
@@ -25,6 +29,17 @@ const toggleLike = (comment: Comment) => {
     message?.info("您已经取消点赞了");
   }
   //   comment.likes += comment.hasLiked ? 1 : -1;
+};
+
+// 显示二维码
+const showQrcode = (type: 'qq' | 'wechat' | 'sina') => {
+  qrcodeType.value = type;
+  qrcodeVisible.value = true;
+};
+
+// 关闭二维码
+const closeQrcode = () => {
+  qrcodeVisible.value = false;
 };
 </script>
 
@@ -47,16 +62,16 @@ const toggleLike = (comment: Comment) => {
       <div class="about-detail-operate-tags">
         <a href="#">kinngyo</a>
       </div>
-      <div :class="['about-detail-operate-share', { active: isIcon }]">
-        <SvgIcon class="icon" name="share" :width="'26px'" :height="'26px'" @mouseover="isIcon = true" />
-        <div class="reach" @mouseleave="isIcon = false">
-          <a href="#">
+      <div :class="['about-detail-operate-share', { active: isIcon }]" @mouseover="isIcon = true" @mouseleave="isIcon = false">
+        <SvgIcon class="icon" name="share" :width="'26px'" :height="'26px'" />
+        <div class="reach">
+          <a @click.prevent="showQrcode('qq')">
             <SvgIcon class="icon" name="qq" :width="'30px'" :height="'30px'" />
           </a>
-          <a href="#">
+          <a @click.prevent="showQrcode('wechat')">
             <SvgIcon class="icon" name="wechat" :width="'30px'" :height="'30px'" />
           </a>
-          <a href="#">
+          <a @click.prevent="showQrcode('sina')">
             <SvgIcon class="icon" name="sina" :width="'30px'" :height="'30px'" />
           </a>
         </div>
@@ -92,6 +107,19 @@ const toggleLike = (comment: Comment) => {
             alt="" />
           <h6>金鱼kinngyo---迷路的黑猫-76P-03-18</h6>
         </a>
+      </div>
+    </div>
+
+    <!-- 二维码弹窗 -->
+    <div v-if="qrcodeVisible" class="qrcode-modal" @click.self="closeQrcode">
+      <div class="qrcode-content">
+        <div class="qrcode-header">
+          <span>{{ qrcodeType === 'qq' ? 'QQ' : qrcodeType === 'wechat' ? '微信' : '新浪微博' }}扫码分享</span>
+          <span class="close" @click="closeQrcode">&times;</span>
+        </div>
+        <div class="qrcode-body">
+          <img :src="qrcodeType === 'qq' ? '/qq-qrcode.png' : qrcodeType === 'wechat' ? '/wechat-qrcode.png' : '/sina-qrcode.png'" :alt="qrcodeType + '二维码'" />
+        </div>
       </div>
     </div>
   </div>
@@ -323,6 +351,52 @@ const toggleLike = (comment: Comment) => {
 @keyframes box_shadow {
   0% {
     box-shadow: 0 0 0 0 #f56c6c;
+  }
+}
+
+.qrcode-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+
+  .qrcode-content {
+    background: white;
+    border-radius: 8px;
+    width: 300px;
+    overflow: hidden;
+    
+    .qrcode-header {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      
+      .close {
+        cursor: pointer;
+        font-size: 20px;
+        &:hover {
+          opacity: 0.7;
+        }
+      }
+    }
+    
+    .qrcode-body {
+      padding: 20px;
+      text-align: center;
+      
+      img {
+        max-width: 200px;
+        height: auto;
+      }
+    }
   }
 }
 </style>
