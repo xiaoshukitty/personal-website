@@ -67,7 +67,7 @@
             <a-list-item>
               <a-list-item-meta>
                 <template #title>
-                  <a :href="item.link" class="favorite-title">{{ item.title }}</a>
+                  <a  :href="item.link" class="favorite-title">{{ item.title }}</a>
                 </template>
                 <template #description>
                   <span class="favorite-info">{{ item.description }}</span>
@@ -242,11 +242,6 @@ onMounted(() => {
               display: inline-flex;
               align-items: center;
 
-              &::before {
-                content: "今日";
-                font-size: 12px;
-                margin-right: 2px;
-              }
             }
           }
         }
