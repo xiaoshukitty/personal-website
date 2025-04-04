@@ -19,6 +19,7 @@ export default defineConfig({
   },
   server: {
     open: true, // 设置为 true，启动时自动打开浏览器
+    port: 3000, // 设置端口号
   },
   css: {
     preprocessorOptions: {
@@ -31,4 +32,5 @@ export default defineConfig({
   // 静态资源基础路径 base: './' || '',
   // base: '/h5', // 子目录
   base: process.env.NODE_ENV === "production" ? "./" : "/",
+
 });

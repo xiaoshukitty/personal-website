@@ -4,6 +4,7 @@ import Footer from './footer/index.vue';
 import Header from './header/index.vue';
 import Main from './main/index.vue';
 import Operation from './operation/index.vue';
+import Music from '../components/Music/index.vue'
 import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { useRoute } from 'vue-router'
 const scrollPosition = ref(0);
@@ -73,6 +74,7 @@ onUnmounted(() => {
         </div>
         <Footer />
         <Operation :scrollPosition="scrollPosition" @scrollOneScreen="scrollOneScreen" />
+        <Music/>
     </div>
 </template>
 
