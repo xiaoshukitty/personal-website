@@ -11,10 +11,12 @@ const {
   currentTime,
   duration,
   progress,
+  currentSong,
   initAudio,
   togglePlay,
   onProgressClick,
-  updateProgress
+  updateProgress,
+  playRandom
 } = useMusic()
 
 // 格式化时间
@@ -62,10 +64,10 @@ onMounted(() => {
         <SvgIcon class="icon" v-if="!isPlaying" name="play_icon" :width="'30px'" :height="'30px'" :color="'#606266'" />
         <SvgIcon class="icon" v-else name="pause_icon" :width="'30px'" :height="'30px'" :color="'#606266'" />
       </div>
-      <div class="music__info">
+      <div class="music__info" v-show="isHovered">
         <div class="music__title">
-          <span class="music__title-text">把回忆拼好给你.mp3</span>
-          <span class="music__title-text">把回忆拼好给你.mp3</span>
+          <span class="music__title-text">{{ currentSong }}</span>
+          <span class="music__title-text">{{ currentSong }}</span>
         </div>
         <div class="music__progress" ref="progressBarRef" @click="handleProgressBarClick" @mousedown="handleDragStart">
           <div class="music__progress-bar" :style="{ width: progress + '%' }"></div>
@@ -75,9 +77,12 @@ onMounted(() => {
           <span>{{ formatTime(duration) }}</span>
         </div>
       </div>
+      <div class="music__random-button" v-show="isHovered" @click="playRandom">
+        <SvgIcon name="random_icon" :width="'30px'" :height="'30px'" :color="'#606266'" />
+      </div>
     </div>
-    <audio id="audio" loop>
-      <source src="../../assets/music/把回忆拼好给你.mp3" type="audio/mpeg">
+    <audio id="audio">
+      <source :src="`/src/assets/music/${currentSong}`" type="audio/mpeg">
     </audio>
   </div>
 </template>
@@ -96,12 +101,13 @@ onMounted(() => {
   overflow: hidden;
   display: flex;
   align-items: center;
-  padding: 0 10px;
+  padding: 0;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 5px 20px rgba(0, 0, 0, 0.2);
   z-index: 9999;
 
   &--hover {
     width: 300px;
+    padding: 0 10px;
   }
 
   &__controls {
@@ -109,6 +115,7 @@ onMounted(() => {
     align-items: center;
     gap: 5px;
     width: 100%;
+    padding-left: 10px;
   }
 
   &__info {
@@ -120,6 +127,12 @@ onMounted(() => {
     padding: 0;
     width: 100%;
     align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+
+    .music--hover & {
+      opacity: 1;
+    }
   }
 
   &__play-button {
@@ -175,6 +188,27 @@ onMounted(() => {
     color: var(--minor);
     width: 80%;
     margin: 0 auto;
+  }
+
+  &__random-button {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-right: 10px;
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+
+    .music--hover & {
+      opacity: 1;
+    }
+
+    &:hover {
+      opacity: 0.8;
+    }
   }
 }
 
