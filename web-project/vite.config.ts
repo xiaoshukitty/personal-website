@@ -19,7 +19,7 @@ export default defineConfig({
   },
   server: {
     open: true, // 设置为 true，启动时自动打开浏览器
-    port: 3000, // 设置端口号
+    // port: 3000, // 设置端口号
   },
   css: {
     preprocessorOptions: {
